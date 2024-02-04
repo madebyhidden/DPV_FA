@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Стиль для текста в TextView -->
+    <style name="MyTextViewStyle">
+        <item name="android:textSize">30sp</item>
+        <item name="android:fontFamily">@font/s</item> <!-- Ссылка на ваш кастомный шрифт -->
+    </style>
+
+    <style name="Main">
+        <item name="android:textSize">30sp</item>
+        <item name="android:fontFamily">@font/gg</item> <!-- Ссылка на ваш кастомный шрифт -->
+    </style>
+
+
+</resources>
