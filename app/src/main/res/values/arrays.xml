@@ -1,0 +1,25 @@
+<resources>
+    <string-array name="your_spinner1_entries">
+        <item>Модуль &quot;ERP-системы&quot;</item>
+        <item>Модуль &quot;Системное программирование&quot;</item>
+        <item>Модуль &quot;Управление разработкой&quot;</item>
+        <item>Модуль &quot;Технологии искусственного интеллекта&quot;</item>
+        <item>Модуль &quot;Языки и методы программирования&quot;</item>
+        <item>Модуль &quot;Разработка распределенных приложений&quot;</item>
+        <item>Модуль &quot;Технологии машинного обучения&quot;</item>
+        <item>Модуль &quot;Финтех&quot;</item>
+
+    </string-array>
+
+    <string-array name="your_spinner2_entries">
+        <item>Модуль &quot;ERP-системы&quot;</item>
+        <item>Модуль &quot;Системное программирование&quot;</item>
+        <item>Модуль &quot;Управление разработкой&quot;</item>
+        <item>Модуль &quot;Технологии искусственного интеллекта&quot;</item>
+        <item>Модуль &quot;Языки и методы программирования&quot;</item>
+        <item>Модуль &quot;Разработка распределенных приложений&quot;</item>
+        <item>Модуль &quot;Технологии машинного обучения&quot;</item>
+        <item>Модуль &quot;Финтех&quot;</item>
+
+    </string-array>
+</resources>
