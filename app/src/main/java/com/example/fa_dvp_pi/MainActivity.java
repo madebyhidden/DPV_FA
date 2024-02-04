@@ -1,5 +1,7 @@
 package com.example.fa_dvp_pi;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -18,6 +20,7 @@ import com.example.fa_dvp_pi.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Spinner mySpinner1;
     private Spinner mySpinner2;
+    private Spinner mySpinner3;
     private Button btnSave__;
     private TextView text;
 
@@ -77,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         mySpinner1 = (Spinner) findViewById(R.id.spinner1);
 
         mySpinner2 = (Spinner) findViewById(R.id.spinner2);
+        mySpinner3 = (Spinner) findViewById(R.id.spinner_pi);
 
         text = (TextView) findViewById(R.id.textview_first);
         tvDate_ = (TextView) findViewById(R.id.tvDate);
@@ -93,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         monday_finder = findPreviousMonday(currentDate);
         tvDate_.setText(monday_finder);
 
-
+        loadData();
         btnDecreaseDate_= (Button)findViewById(R.id.btnDecreaseDate);
         btnDecreaseDate_.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -172,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
         // Получите выбранные значения из выпадающих списков
         String selectedValueSpinner1 = mySpinner1.getSelectedItem().toString();
         String selectedValueSpinner2 = mySpinner2.getSelectedItem().toString();
+        String selectedValueSpinner3 = mySpinner3.getSelectedItem().toString();
 
         Python py = Python.getInstance();
         PyObject pyObject = py.getModule("mainForFA");
@@ -179,16 +185,42 @@ public class MainActivity extends AppCompatActivity {
         // получение результата из Python в Java
 //        String resultInJava = result.toJava(String.class);
 //        Log.d("MyActivity", resultInJava);
-        PyObject connection = pyObject.callAttr("update_schedule", curr_tv_text);
+        PyObject connection = pyObject.callAttr("update_schedule", selectedValueSpinner3, curr_tv_text);
         if(connection == null){
             text.setText("Расписание не найдено");
         }
         else {
             text.setText(connection.toString());
+            SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("spinner1", selectedValueSpinner1);
+            editor.putString("spinner2", selectedValueSpinner2);
+            editor.putString("spinner3", selectedValueSpinner3);
+            editor.apply();
         }
 
 
 
+    }
+    private void loadData() {
+        // Загрузка данных из файла
+        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        String savedValueSpinner1 = sharedPreferences.getString("spinner1", "");
+        String savedValueSpinner2 = sharedPreferences.getString("spinner2", "");
+        String savedValueSpinner3 = sharedPreferences.getString("spinner3", "");
+
+        // Установка сохраненных значений в спиннеры
+        ArrayAdapter<String> adapter = (ArrayAdapter<String>) mySpinner1.getAdapter();
+        int spinner1Position = adapter.getPosition(savedValueSpinner1);
+        mySpinner1.setSelection(spinner1Position);
+
+        adapter = (ArrayAdapter<String>) mySpinner2.getAdapter();
+        int spinner2Position = adapter.getPosition(savedValueSpinner2);
+        mySpinner2.setSelection(spinner2Position);
+
+        adapter = (ArrayAdapter<String>) mySpinner3.getAdapter();
+        int spinner3Position = adapter.getPosition(savedValueSpinner3);
+        mySpinner3.setSelection(spinner3Position);
     }
 
     public static String findPreviousMonday(Date date) {

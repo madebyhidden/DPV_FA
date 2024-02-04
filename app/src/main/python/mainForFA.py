@@ -20,8 +20,8 @@ directions = ['Модуль "ERP-системы"', 'Модуль "Системн
               'Модуль "Разработка распределенных приложений"',
               'Модуль "Технологии машинного обучения"', 'Модуль "Финтех"']
 
-group_ = {'ПИ21-1': 110687, 'ПИ21-2': 110809, 'ПИ21-3': 110811, 'ПИ21-4': 110812, 'ПИ21-5': 110813, 'ПИ21-6': 110814,
-          'ПИ21-7': 110815}
+group_ = {'ПИ21–1': 110687, 'ПИ21–2': 110809, 'ПИ21–3': 110811, 'ПИ21–4': 110812, 'ПИ21–5': 110813, 'ПИ21–6': 110814,
+          'ПИ21–7': 110815}
 
 specializations = {
     "Модуль ERP-системы": [
@@ -67,8 +67,8 @@ def get_from_studio(name1, name2):
 
 #
 #
-def get_schedule(start_date, finish_date):
-    url = f'https://ruz.fa.ru/api/schedule/group/110815?start={start_date}&finish={finish_date}&lng=1'
+def get_schedule(group, start_date, finish_date):
+    url = f'https://ruz.fa.ru/api/schedule/group/{group}?start={start_date}&finish={finish_date}&lng=1'
     schedule_data = requests.get(url).json()
 
     return schedule_data
@@ -81,26 +81,63 @@ def calculate_end_date(start_date):
     return end_datetime.strftime('%Y.%m.%d')
 
 
-def pretty_print_schedule( matches, count=0):
+def pretty_print_schedule(group, matches, count=0):
     if matches:
+
         result_text = ''
-        header = f"{'Date':<20} {'Discipline':<70} {'Time':<19} {'Auditorium':<15} \n"
+        header = f"{'Date':<16} {'Type':<39}  {'Discipline':<55} {'Time':<19} {'Auditorium':<15} \n"
         result_text += header
         result_text += '-' * len(header) + '\n'
+        if group in ['ПИ21–5', 'ПИ21–6', 'ПИ21–7']:
+            for match in matches:
+                if match['auditorium'] == 'ЛП51_1/0614':
+                    continue
+                if count == 0 or count == 5:
+                    if count == 0:
+                        row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {'Персон. Ауд.':<15}\n"
+                        result_text += row
+                    else:
+                        row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {match['auditorium']:<15}\n"
+                        result_text += row
+                if match['discipline'] == 'Иностранный язык в профессиональной сфере':
+                    count += 1
 
-        for match in matches:
-            if match['auditorium'] == 'ЛП51_1/0614':
-                continue
-            if count == 0 or count == 5:
-                if count == 0:
-                    row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {'Персон. Ауд.':<15}\n"
+            return result_text
+        elif group in ['ПИ21–1', 'ПИ21–2']:
+            booling = False
+            for match in matches:
+
+                if match['discipline'] == 'Иностранный язык в профессиональной сфере':
+                    count += 1
+                if count == 1:
+                    row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {'Персон. Ауд.':<15}\n"
                     result_text += row
-                else:
-                    row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {match['auditorium']:<15}\n"
+                    booling = True
+                elif count == 0 or count == 4:
+                    row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {match['auditorium']:<15}\n"
                     result_text += row
-            if match['discipline'] == 'Иностранный язык в профессиональной сфере':
-                count += 1
-        return result_text
+                if count == 3:
+                    count += 1
+            return result_text
+        elif group in ['ПИ21–3', 'ПИ21–4']:
+            booling = False
+            for match in matches:
+
+                if match['discipline'] == 'Иностранный язык в профессиональной сфере':
+                    count += 1
+                if count == 1:
+                    row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {'Персон. Ауд.':<15}\n"
+                    result_text += row
+                    booling = True
+                elif count == 0 or count == 4:
+                    row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {match['auditorium']:<15}\n"
+                    result_text += row
+                if count == 3:
+                    count += 1
+            return result_text
+    else:
+        return 'Расписание не найдено.'
+#
 #
 #
 # def pretty_print_schedule( matches, count=0):
@@ -191,11 +228,11 @@ def update_disciplines(name1, name2):
 
 
 #
-def update_schedule(start_date):
+def update_schedule(group, start_date):
     finish_date = calculate_end_date(start_date)
-    schedule_data = get_schedule(start_date, finish_date)
+    schedule_data = get_schedule(group_[group], start_date, finish_date)
     matching_classes = find_classes_for_date_and_disciplines(user_disciplines, schedule_data)
-    return pretty_print_schedule(matching_classes)
+    return pretty_print_schedule(group, matching_classes)
 #
 #
 # # Tkinter GUI

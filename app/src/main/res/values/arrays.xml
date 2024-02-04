@@ -22,4 +22,16 @@
         <item>Модуль &quot;Финтех&quot;</item>
 
     </string-array>
+
+    <string-array name="pi_spinner_types">
+        <item>ПИ21–1</item>
+        <item>ПИ21–2</item>
+        <item>ПИ21–3</item>
+        <item>ПИ21–4</item>
+        <item>ПИ21–5</item>
+        <item>ПИ21–6</item>
+        <item>ПИ21–7</item>
+
+
+    </string-array>
 </resources>
