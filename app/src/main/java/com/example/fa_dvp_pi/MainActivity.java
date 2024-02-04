@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         mySpinner1 = (Spinner) findViewById(R.id.spinner1);
 
         mySpinner2 = (Spinner) findViewById(R.id.spinner2);
-        mySpinner3 = (Spinner) findViewById(R.id.spinner_pi);
+        mySpinner3 = (Spinner) findViewById(R.id.spinner_bi);
 
         text = (TextView) findViewById(R.id.textview_first);
         tvDate_ = (TextView) findViewById(R.id.tvDate);
