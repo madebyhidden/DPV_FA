@@ -16,7 +16,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.fa_dvp_pi.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +28,14 @@ import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private AppBarConfiguration appBarConfiguration;
-    private ActivityMainBinding binding;
 
     private Spinner mySpinner1;
     private Spinner mySpinner2;
@@ -52,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView tvDate_;
 
-    private String monday_finder;
+    public String monday_finder;
 
     private Button btnDecreaseDate_;
     private Button btnIncreaseDate_;
@@ -60,23 +66,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        setSupportActionBar(binding.toolbar);
-
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        setContentView(R.layout.fragment_first);
 
         mySpinner1 = (Spinner) findViewById(R.id.spinner1);
 
@@ -190,24 +180,55 @@ public class MainActivity extends AppCompatActivity {
             text.setText("Расписание не найдено");
         }
         else {
-            text.setText(connection.toString());
-            SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("spinner1", selectedValueSpinner1);
-            editor.putString("spinner2", selectedValueSpinner2);
-            editor.putString("spinner3", selectedValueSpinner3);
-            editor.apply();
+            JSONObject jsonData = new JSONObject();
+            try {
+                jsonData.put("spinner1", selectedValueSpinner1);
+                jsonData.put("spinner2", selectedValueSpinner2);
+                jsonData.put("spinner3", selectedValueSpinner3);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+            String fileName = "data.json";
+            try (FileOutputStream fos = openFileOutput(fileName, Context.MODE_PRIVATE)) {
+                fos.write(jsonData.toString().getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
 
 
     }
-    private void loadData() {
-        // Загрузка данных из файла
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        String savedValueSpinner1 = sharedPreferences.getString("spinner1", "");
-        String savedValueSpinner2 = sharedPreferences.getString("spinner2", "");
-        String savedValueSpinner3 = sharedPreferences.getString("spinner3", "");
+    public void loadData() {
+        String savedValueSpinner1 = "Выбрать";
+        String savedValueSpinner2 = "Выбрать";
+        String savedValueSpinner3 = "Выбрать";
+
+        String fileName = "data.json";
+        try (FileInputStream fis = openFileInput(fileName)) {
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+
+            // Преобразовываем JSON-строку в объект JSONObject
+            JSONObject jsonData = new JSONObject(sb.toString());
+
+            // Получаем значения из объекта JSONObject
+            savedValueSpinner1 = jsonData.getString("spinner1");
+            savedValueSpinner2 = jsonData.getString("spinner2");
+            savedValueSpinner3 = jsonData.getString("spinner3");
+
+            // Используйте значения в вашем коде
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
 
         // Установка сохраненных значений в спиннеры
         ArrayAdapter<String> adapter = (ArrayAdapter<String>) mySpinner1.getAdapter();
@@ -267,12 +288,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
-    }
+
 
 
 }

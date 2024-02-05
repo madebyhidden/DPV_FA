@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TimeTableActivity">
+
+    <TextView
+        android:id="@+id/timetable_tvDate"
+        style="@style/MyTextViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello"
+        android:textSize="40dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.005"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/timetable_tvDate"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:id="@+id/llDay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Добавьте здесь элементы для каждого дня недели в коде -->
+            <!-- Пример для Пн -->
+
+            <!-- Добавил TextView для каждого дня недели -->
+            <TextView
+                android:id="@+id/timetable_tvMonday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="40dp"
+                android:text="Пн"/>
+            <LinearLayout
+                android:id="@+id/llMonday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!-- Добавьте здесь элементы для Пн -->
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/timetable_tvTuesday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="40dp"
+                android:text="Вт"/>
+
+            <!-- Пример для Вт -->
+            <LinearLayout
+                android:id="@+id/llTuesday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!-- Добавьте здесь элементы для Вт -->
+            </LinearLayout>
+            <TextView
+                android:id="@+id/timetable_tvWednesday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="40dp"
+                android:text="Ср"/>
+
+            <!-- Пример для Вт -->
+            <LinearLayout
+                android:id="@+id/llWednesday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!-- Добавьте здесь элементы для Вт -->
+            </LinearLayout>
+            <TextView
+                android:id="@+id/timetable_tvThurday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="40dp"
+                android:text="Чт"/>
+
+            <!-- Пример для Вт -->
+            <LinearLayout
+                android:id="@+id/llThurday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!-- Добавьте здесь элементы для Вт -->
+            </LinearLayout>
+            <TextView
+                android:id="@+id/timetable_tvFriday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="40dp"
+                android:text="Пт"/>
+
+            <!-- Пример для Вт -->
+            <LinearLayout
+                android:id="@+id/llFriday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!-- Добавьте здесь элементы для Вт -->
+            </LinearLayout>
+            <TextView
+                android:id="@+id/timetable_tvSaturday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="40dp"
+                android:text="Сб"/>
+
+            <!-- Пример для Вт -->
+            <LinearLayout
+                android:id="@+id/llSaturday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!-- Добавьте здесь элементы для Вт -->
+            </LinearLayout>
+            <TextView
+                android:id="@+id/timetable_tvSunday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="40dp"
+                android:text="Вс"/>
+
+            <!-- Пример для Вт -->
+            <LinearLayout
+                android:id="@+id/llSunday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!-- Добавьте здесь элементы для Вт -->
+            </LinearLayout>
+
+            <!-- Продолжайте для остальных дней недели -->
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

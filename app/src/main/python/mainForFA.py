@@ -212,7 +212,7 @@ def update_schedule(group, start_date):
     finish_date = calculate_end_date(start_date)
     schedule_data = get_schedule(group_[group], start_date, finish_date)
     matching_classes = find_classes_for_date_and_disciplines(user_disciplines, schedule_data)
-    return pretty_print_schedule(group, matching_classes)
+    return  matching_classes
 #
 #
 # # Tkinter GUI
