@@ -40,13 +40,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="40dp"
-                android:text="Пн"/>
+                android:text="Понедельник"/>
             <LinearLayout
                 android:id="@+id/llMonday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <!-- Добавьте здесь элементы для Пн -->
+                <!-- Добавил RecyclerView для динамического создания элементов под каждым днем недели -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/timetable_rvMonday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Recycle"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
             </LinearLayout>
 
             <TextView
@@ -54,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="40dp"
-                android:text="Вт"/>
+                android:text="Вторник"/>
 
             <!-- Пример для Вт -->
             <LinearLayout
@@ -63,85 +69,112 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <!-- Добавьте здесь элементы для Вт -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/timetable_rvTuesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/timetable_tvWednesday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="40dp"
-                android:text="Ср"/>
+                android:text="Среда"/>
 
-            <!-- Пример для Вт -->
+            <!-- Пример для Ср -->
             <LinearLayout
                 android:id="@+id/llWednesday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <!-- Добавьте здесь элементы для Вт -->
+                <!-- Добавьте здесь элементы для Ср -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/timetable_rvWednesday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/timetable_tvThurday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="40dp"
-                android:text="Чт"/>
+                android:text="Четверг"/>
 
-            <!-- Пример для Вт -->
+            <!-- Пример для Чт -->
             <LinearLayout
                 android:id="@+id/llThurday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <!-- Добавьте здесь элементы для Вт -->
+                <!-- Добавьте здесь элементы для Чт -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/timetable_rvThurday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/timetable_tvFriday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="40dp"
-                android:text="Пт"/>
+                android:text="Пятница"/>
 
-            <!-- Пример для Вт -->
+            <!-- Пример для Пт -->
             <LinearLayout
                 android:id="@+id/llFriday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <!-- Добавьте здесь элементы для Вт -->
+                <!-- Добавьте здесь элементы для Пт -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/timetable_rvFriday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/timetable_tvSaturday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="40dp"
-                android:text="Сб"/>
+                android:text="Суббота"/>
 
-            <!-- Пример для Вт -->
+            <!-- Пример для Сб -->
             <LinearLayout
                 android:id="@+id/llSaturday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <!-- Добавьте здесь элементы для Вт -->
+                <!-- Добавьте здесь элементы для Сб -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/timetable_rvSaturday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/timetable_tvSunday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="40dp"
-                android:text="Вс"/>
+                android:text="Воскресенье"/>
 
-            <!-- Пример для Вт -->
+            <!-- Пример для Вс -->
             <LinearLayout
                 android:id="@+id/llSunday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <!-- Добавьте здесь элементы для Вт -->
+                <!-- Добавьте здесь элементы для Вс -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/timetable_rvSunday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
             </LinearLayout>
-
-            <!-- Продолжайте для остальных дней недели -->
-
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

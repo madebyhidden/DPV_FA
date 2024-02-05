@@ -1,6 +1,7 @@
 package com.example.fa_dvp_pi;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
+import com.example.timetable.TimetableAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,26 +29,33 @@ import java.util.Date;
 import java.util.List;
 
 public class TimeTableActivity extends AppCompatActivity {
+
     {
         if (!Python.isStarted()) {
             Python.start(new AndroidPlatform(this));
         }
     }
     private TextView tt_tvDate_;
-    List<String> mondayData = new ArrayList<>();
-    List<String> TuesdayData = new ArrayList<>();
-    List<String> WednesdayData = new ArrayList<>();
-    List<String> ThurdayData = new ArrayList<>();
-    List<String> FridayData = new ArrayList<>();
-    List<String> SaturdayData = new ArrayList<>();
-    List<String> SundayData = new ArrayList<>();
 
-    LinearLayout llMonday,llTuesday ,llWednesday ,llThurday , llFriday,llSaturday , llSunday;
+
+
+    TimetableAdapter mondayAdapter, tuesdayAdapter, wednesdayAdapter, thursdayAdapter, fridayAdapter, saturdayAdapter, sundayAdapter;
+
+    RecyclerView rvMonday, rvTuesday, rvWednesday, rvThursday, rvFriday, rvSaturday, rvSunday;
+    List<TimetableAdapter.TimetableItem> mondayItems = new ArrayList<>();
+    List<TimetableAdapter.TimetableItem> tuesdayItems = new ArrayList<>();
+    List<TimetableAdapter.TimetableItem> wednesdayItems = new ArrayList<>();
+    List<TimetableAdapter.TimetableItem> thursdayItems = new ArrayList<>();
+    List<TimetableAdapter.TimetableItem> fridayItems = new ArrayList<>();
+    List<TimetableAdapter.TimetableItem> saturdayItems = new ArrayList<>();
+    List<TimetableAdapter.TimetableItem> sundayItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        String savedValueSpinner1 = "Выбрать";
+        String savedValueSpinner2 = "Выбрать";
         String savedValueSpinner3 = "Выбрать";
         Date currentDate = new Date();
         setContentView(R.layout.activity_time_table);
@@ -55,17 +64,16 @@ public class TimeTableActivity extends AppCompatActivity {
         // Пример данных. Здесь вам нужно использовать ваши данные.
 
 
-        // Получаем ссылку на LinearLayout для Пн
-        llMonday = findViewById(R.id.llMonday);
-        llTuesday = findViewById(R.id.llTuesday);
-        llWednesday = findViewById(R.id.llWednesday);
-        llThurday = findViewById(R.id.llThurday);
-        llFriday = findViewById(R.id.llFriday);
-        llSaturday = findViewById(R.id.llSaturday);
-        llSunday = findViewById(R.id.llSunday);
+
 
         // Добавляем элементы в LinearLayout для Пн
-
+        rvMonday = findViewById(R.id.timetable_rvMonday);
+        rvTuesday = findViewById(R.id.timetable_rvTuesday);
+        rvWednesday = findViewById(R.id.timetable_rvWednesday);
+        rvThursday = findViewById(R.id.timetable_rvThurday);
+        rvFriday = findViewById(R.id.timetable_rvFriday);
+        rvSaturday = findViewById(R.id.timetable_rvSaturday);
+        rvSunday = findViewById(R.id.timetable_rvSunday);
 
 
 
@@ -87,7 +95,8 @@ public class TimeTableActivity extends AppCompatActivity {
             // Преобразовываем JSON-строку в объект JSONObject
             JSONObject jsonData = new JSONObject(sb.toString());
 
-
+            savedValueSpinner1 = jsonData.getString("spinner1");
+            savedValueSpinner2 = jsonData.getString("spinner2");
             savedValueSpinner3 = jsonData.getString("spinner3");
 
             // Используйте значения в вашем коде
@@ -97,9 +106,13 @@ public class TimeTableActivity extends AppCompatActivity {
 
         Python py = Python.getInstance();
         PyObject pyObject = py.getModule("mainForFA");
+        PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1, savedValueSpinner2);
         PyObject result = pyObject.callAttr("update_schedule", savedValueSpinner3, curr_tv_text);
         // получение результата из Python в Java
         parseJsonArray(String.valueOf(result));
+
+
+
         Log.d("TimeTableActivity", String.valueOf(result));
 
 
@@ -115,6 +128,15 @@ public class TimeTableActivity extends AppCompatActivity {
         int count_thr = 0;
         int count_fri = 0;
         int count_sat = 0;
+
+
+        // Получил ссылку на RecyclerView для понедельника
+
+
+
+
+
+
 
         try {
             // Создаем JSONArray из строки
@@ -134,28 +156,29 @@ public class TimeTableActivity extends AppCompatActivity {
                 String endLesson = jsonObject.optString("endLesson", "");
                 String date = jsonObject.optString("date", "");
                 if (dayOfWeekString.equals("Пн")){
-                    mondayData.add(discipline);
-                    mondayData.add(kindOfWork);
+                    System.out.println(discipline + beginLesson+ endLesson+ auditorium+ kindOfWork);
+                    mondayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork));
+
                     count_mon += 1;
                 }
                 if (dayOfWeekString.equals("Вт")){
-                    TuesdayData.add(discipline);
+                    tuesdayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork));
                     count_tue+= 1;
                 }
                 if (dayOfWeekString.equals("Ср")){
-                    WednesdayData.add(discipline);
+                    wednesdayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork));
                     count_wed += 1;
                 }
                 if (dayOfWeekString.equals("Чт")){
-                    ThurdayData.add(discipline);
+                    thursdayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork));
                     count_thr += 1;
                 }
                 if (dayOfWeekString.equals("Пт")){
-                    FridayData.add(discipline);
+                    fridayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork));
                     count_fri += 1;
                 }
                 if (dayOfWeekString.equals("Сб")){
-                    SaturdayData.add(discipline);
+                    saturdayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork));
                     count_sat += 1;
                 }
 
@@ -163,35 +186,53 @@ public class TimeTableActivity extends AppCompatActivity {
 
 
             }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
         if(count_mon == 0){
-            mondayData.add("Сегодня выходной");
+            mondayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "",""));
         }
         if(count_tue == 0){
-            TuesdayData.add("Сегодня выходной");
+            tuesdayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "",""));
         }
         if(count_wed == 0){
-            WednesdayData.add("Сегодня выходной");
+            wednesdayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "",""));
         }
         if(count_thr == 0){
-            ThurdayData.add("Сегодня выходной");
+            thursdayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "",""));
         }
         if(count_fri == 0){
-            FridayData.add("Сегодня выходной");
+            fridayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "",""));
         }
         if(count_sat == 0){
-            SaturdayData.add("Сегодня выходной");
+            saturdayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "",""));
         }
-        SundayData.add("Сегодня выходной");
-        addItemsToLinearLayout(mondayData, llMonday);
-        addItemsToLinearLayout(TuesdayData, llTuesday);
-        addItemsToLinearLayout(WednesdayData, llWednesday);
-        addItemsToLinearLayout(ThurdayData, llThurday);
-        addItemsToLinearLayout(FridayData, llFriday);
-        addItemsToLinearLayout(SaturdayData, llSaturday);
-        addItemsToLinearLayout(SundayData, llSunday);
+        sundayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "",""));
+
+        mondayAdapter = new TimetableAdapter(mondayItems);
+        rvMonday.setAdapter(mondayAdapter);
+
+
+        tuesdayAdapter = new TimetableAdapter(tuesdayItems);
+        rvTuesday.setAdapter(tuesdayAdapter);
+
+
+        wednesdayAdapter = new TimetableAdapter(wednesdayItems);
+        rvWednesday.setAdapter(wednesdayAdapter);
+
+
+        thursdayAdapter = new TimetableAdapter(thursdayItems);
+        rvThursday.setAdapter(thursdayAdapter);
+
+        fridayAdapter = new TimetableAdapter(fridayItems);
+        rvFriday.setAdapter(fridayAdapter);
+
+        saturdayAdapter = new TimetableAdapter(saturdayItems);
+        rvSaturday.setAdapter(saturdayAdapter);
+
+        sundayAdapter = new TimetableAdapter(sundayItems);
+        rvSunday.setAdapter(sundayAdapter);
 
     }
 
@@ -202,8 +243,9 @@ public class TimeTableActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT
 
         );
-
+        System.out.println(data.get(0));
         for (String item : data) {
+
             if( counter % 2 == 0){
                 TextView textView = new TextView(this);
                 textView.setText(item);
@@ -220,10 +262,6 @@ public class TimeTableActivity extends AppCompatActivity {
 
             }
             counter += 1;
-            TextView textView = new TextView(this);
-            textView.setText(item);
-            // Здесь вы можете настроить стили для TextView и другие параметры
-            linearLayout.addView(textView, layoutParams_disc);
         }
     }
 
