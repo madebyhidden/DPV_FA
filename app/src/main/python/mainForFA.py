@@ -73,13 +73,10 @@ def pretty_print_schedule(group, matches, count=0):
             for match in matches:
                 if match['auditorium'] == 'ЛП51_1/0614':
                     continue
-                if count == 0 or count == 5:
-                    if count == 0:
-                        row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {'Персон. Ауд.':<15}\n"
-                        result_text += row
-                    else:
-                        row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {match['auditorium']:<15}\n"
-                        result_text += row
+
+
+                row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {match['auditorium']:<15}\n"
+                result_text += row
                 if match['discipline'] == 'Иностранный язык в профессиональной сфере':
                     count += 1
 
@@ -90,32 +87,13 @@ def pretty_print_schedule(group, matches, count=0):
 
                 if match['discipline'] == 'Иностранный язык в профессиональной сфере':
                     count += 1
-                if count == 1:
-                    row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {'Персон. Ауд.':<15}\n"
-                    result_text += row
-                    booling = True
-                elif count == 0 or count == 4:
-                    row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {match['auditorium']:<15}\n"
-                    result_text += row
-                if count == 3:
-                    count += 1
-            return result_text
-        elif group in ['ПИ21–3', 'ПИ21–4']:
-            booling = False
-            for match in matches:
 
-                if match['discipline'] == 'Иностранный язык в профессиональной сфере':
-                    count += 1
-                if count == 1:
-                    row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {'Персон. Ауд.':<15}\n"
-                    result_text += row
-                    booling = True
-                elif count == 0 or count == 4:
-                    row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {match['auditorium']:<15}\n"
-                    result_text += row
+                row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {match['auditorium']:<15}\n"
+                result_text += row
                 if count == 3:
                     count += 1
             return result_text
+
     else:
         return 'Расписание не найдено.'
 #
