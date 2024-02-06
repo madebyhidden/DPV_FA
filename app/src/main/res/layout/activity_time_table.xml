@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TimeTableActivity">
+    tools:context=".TimeTableActivity"
+    android:background="#002B27">
 
     <!-- Заменил TextView с "Hello" на RecyclerView с горизонтальным расположением элементов -->
     <FrameLayout
@@ -47,8 +48,9 @@
                 android:id="@+id/timetable_tvMonday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                style="@style/DateString"
                 android:text="Понедельник"
-                android:textSize="40dp" />
+                 />
 
             <LinearLayout
                 android:id="@+id/llMonday"
@@ -69,7 +71,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Вторник"
-                android:textSize="40dp" />
+                style="@style/DateString"
+                 />
 
             <!-- Пример для Вт -->
             <LinearLayout
@@ -90,7 +93,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Среда"
-                android:textSize="40dp" />
+                style="@style/DateString"
+                />
 
             <!-- Пример для Ср -->
             <LinearLayout
@@ -111,7 +115,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Четверг"
-                android:textSize="40dp" />
+                style="@style/DateString"
+                 />
 
             <!-- Пример для Чт -->
             <LinearLayout
@@ -132,7 +137,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Пятница"
-                android:textSize="40dp" />
+                style="@style/DateString"
+                 />
 
             <!-- Пример для Пт -->
             <LinearLayout
@@ -153,7 +159,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Суббота"
-                android:textSize="40dp" />
+                style="@style/DateString"
+                 />
 
             <!-- Пример для Сб -->
             <LinearLayout
@@ -174,7 +181,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Воскресенье"
-                android:textSize="40dp" />
+                style="@style/DateString"
+                 />
 
             <!-- Пример для Вс -->
             <LinearLayout
@@ -190,14 +198,7 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/timetable_tvDate"
-                style="@style/MyTextViewStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Hello"
-                android:textSize="40dp" />
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
