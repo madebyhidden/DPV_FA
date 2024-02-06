@@ -2,6 +2,7 @@ package com.example.fa_dvp_pi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -10,10 +11,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.ui.AppBarConfiguration;
 
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
@@ -27,11 +26,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     {
@@ -39,20 +35,13 @@ public class MainActivity extends AppCompatActivity {
             Python.start(new AndroidPlatform(this));
         }
     }
-    private AppBarConfiguration appBarConfiguration;
 
     private Spinner mySpinner1;
     private Spinner mySpinner2;
     private Spinner mySpinner3;
     private Button btnSave__;
-    private TextView text;
-
-    private TextView tvDate_;
-
     public String monday_finder;
 
-    private Button btnDecreaseDate_;
-    private Button btnIncreaseDate_;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +53,9 @@ public class MainActivity extends AppCompatActivity {
         mySpinner2 = (Spinner) findViewById(R.id.spinner2);
         mySpinner3 = (Spinner) findViewById(R.id.spinner_pi);
 
-        text = (TextView) findViewById(R.id.textview_first);
-        tvDate_ = (TextView) findViewById(R.id.tvDate);
 
-        btnSave__= (Button)findViewById(R.id.btnSave);
-        btnSave__.setOnClickListener(new View.OnClickListener(){
+        btnSave__ = (Button) findViewById(R.id.btnSave);
+        btnSave__.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 saveData();
@@ -84,85 +71,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Date currentDate = new Date();
-        monday_finder = findPreviousMonday(currentDate);
-        tvDate_.setText(monday_finder);
-
+        monday_finder = getMondayDate();
         loadData();
-        btnDecreaseDate_= (Button)findViewById(R.id.btnDecreaseDate);
-        btnDecreaseDate_.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                try {
-                    Decrease();
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-
-        btnIncreaseDate_= (Button)findViewById(R.id.btnIncreaseDate);
-        btnIncreaseDate_.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                try {
-                    Increase();
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-
     }
 
-    private void Decrease() throws ParseException{
-        // Получаем текущее значение даты из TextView
-        String curr_val = (String) tvDate_.getText();
-
-        // Форматируем строку с датой в Date
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
-        Date currentDate = sdf.parse(curr_val);
-
-        // Создаем объект Calendar и устанавливаем текущую дату
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(currentDate);
-
-        // Вычитаем одну неделю из даты
-        calendar.add(Calendar.WEEK_OF_YEAR, -1);
-
-        // Получаем новую дату
-        Date decreasedDate = calendar.getTime();
-
-        // Форматируем новую дату обратно в строку
-        String decreasedDateString = sdf.format(decreasedDate);
-        tvDate_.setText(decreasedDateString);
-
-    }
-
-    private void Increase() throws ParseException{
-        // Получаем текущее значение даты из TextView
-        String curr_val = (String) tvDate_.getText();
-
-        // Форматируем строку с датой в Date
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
-        Date currentDate = sdf.parse(curr_val);
-
-        // Создаем объект Calendar и устанавливаем текущую дату
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(currentDate);
-
-        calendar.add(Calendar.WEEK_OF_YEAR, +1);
-
-        // Получаем новую дату
-        Date decreasedDate = calendar.getTime();
-
-        // Форматируем новую дату обратно в строку
-        String decreasedDateString = sdf.format(decreasedDate);
-        tvDate_.setText(decreasedDateString);
-
-    }
     private void saveData() {
-        String curr_tv_text = (String) tvDate_.getText();
+        String curr_tv_text = getMondayDate();
         Log.d("MyActivity", curr_tv_text);
         // Получите выбранные значения из выпадающих списков
         String selectedValueSpinner1 = mySpinner1.getSelectedItem().toString();
@@ -171,36 +85,28 @@ public class MainActivity extends AppCompatActivity {
 
         Python py = Python.getInstance();
         PyObject pyObject = py.getModule("mainForFA");
-        PyObject result = pyObject.callAttr("update_disciplines", selectedValueSpinner1, selectedValueSpinner2);
-        // получение результата из Python в Java
-//        String resultInJava = result.toJava(String.class);
-//        Log.d("MyActivity", resultInJava);
-        PyObject connection = pyObject.callAttr("update_schedule", selectedValueSpinner3, curr_tv_text);
-        if(connection == null){
-            text.setText("Расписание не найдено");
-        }
-        else {
-            JSONObject jsonData = new JSONObject();
-            try {
-                jsonData.put("spinner1", selectedValueSpinner1);
-                jsonData.put("spinner2", selectedValueSpinner2);
-                jsonData.put("spinner3", selectedValueSpinner3);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        pyObject.callAttr("update_disciplines", selectedValueSpinner1, selectedValueSpinner2);
 
-
-            String fileName = "data.json";
-            try (FileOutputStream fos = openFileOutput(fileName, Context.MODE_PRIVATE)) {
-                fos.write(jsonData.toString().getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        JSONObject jsonData = new JSONObject();
+        try {
+            jsonData.put("spinner1", selectedValueSpinner1);
+            jsonData.put("spinner2", selectedValueSpinner2);
+            jsonData.put("spinner3", selectedValueSpinner3);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.d("JSONException", Objects.requireNonNull(e.getMessage()));
         }
 
 
+        String fileName = "data.json";
+        try (FileOutputStream fos = openFileOutput(fileName, Context.MODE_PRIVATE)) {
+            fos.write(jsonData.toString().getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
+
     public void loadData() {
         String savedValueSpinner1 = "Выбрать";
         String savedValueSpinner2 = "Выбрать";
@@ -244,51 +150,32 @@ public class MainActivity extends AppCompatActivity {
         mySpinner3.setSelection(spinner3Position);
     }
 
-    public static String findPreviousMonday(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
 
-        // Получаем номер дня недели (воскресенье - 1, понедельник - 2, ..., суббота - 7)
-        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-
-        // Вычисляем разницу между текущим днем и понедельником
-        int daysToSubtract = dayOfWeek - Calendar.MONDAY;
-        if (daysToSubtract < 0) {
-            // Если текущий день недели - воскресенье, вычитаем 6 дней
-            daysToSubtract = 6;
-        }
-
-        // Вычитаем разницу, чтобы получить предыдущий понедельник
-        calendar.add(Calendar.DAY_OF_MONTH, -daysToSubtract);
-
-        // Форматируем результат в строку
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd", Locale.getDefault());
-        return dateFormat.format(calendar.getTime());
+    public static String getMondayDate() {
+        android.icu.util.Calendar calendar = android.icu.util.Calendar.getInstance();
+        calendar.set(android.icu.util.Calendar.DAY_OF_WEEK, android.icu.util.Calendar.MONDAY);
+        int year = calendar.get(android.icu.util.Calendar.YEAR);
+        int month = calendar.get(android.icu.util.Calendar.MONTH) + 1;
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        return String.format(Locale.US, "%04d.%02d.%02d", year, month, dayOfMonth);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-
-
 
 
 }
