@@ -9,10 +9,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
+import com.example.timetable.DateAdapter;
 import com.example.timetable.TimetableAdapter;
 
 import org.json.JSONArray;
@@ -23,8 +25,10 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -54,14 +58,74 @@ public class TimeTableActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String savedValueSpinner1 = "Выбрать";
-        String savedValueSpinner2 = "Выбрать";
-        String savedValueSpinner3 = "Выбрать";
+        final String[] savedValueSpinner1 = {"Выбрать"};
+        final String[] savedValueSpinner2 = {"Выбрать"};
+        final String[] savedValueSpinner3 = {"Выбрать"};
         Date currentDate = new Date();
         setContentView(R.layout.activity_time_table);
 
 
-        // Пример данных. Здесь вам нужно использовать ваши данные.
+        // Получил ссылку на RecyclerView с датами
+        RecyclerView rvDate = findViewById(R.id.timetable_rvDate);
+
+        List<DateAdapter.DateItem> dateItems = new ArrayList<>();
+        for (int i = 5; i <= 26; i = i +7){
+            if (i<10){
+                String dateValue = String.format("2024.02.0%s", i); // ваше значение даты
+                System.out.println(dateValue);
+                dateItems.add(new DateAdapter.DateItem(dateValue));
+            }else {
+                String dateValue = String.format("2024.02.%s", i); // ваше значение даты
+                System.out.println(dateValue);
+                dateItems.add(new DateAdapter.DateItem(dateValue));
+            }
+
+        }
+
+
+            // Создал адаптер с этим списком и слушателем, который реализует интерфейс OnDateSelectedListener
+        DateAdapter dateAdapter = new DateAdapter(dateItems, new DateAdapter.OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(DateAdapter.DateItem dateItem) {
+                reset();
+                tt_tvDate_ = (TextView) findViewById(R.id.item_date_tvDate);
+
+                String curr_tv_text = (String) tt_tvDate_.getText();
+
+
+                String fileName = "data.json";
+                try (FileInputStream fis = openFileInput(fileName)) {
+                    InputStreamReader isr = new InputStreamReader(fis);
+                    BufferedReader br = new BufferedReader(isr);
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line);
+                    }
+
+                    // Преобразовываем JSON-строку в объект JSONObject
+                    JSONObject jsonData = new JSONObject(sb.toString());
+
+                    savedValueSpinner1[0] = jsonData.getString("spinner1");
+                    savedValueSpinner2[0] = jsonData.getString("spinner2");
+                    savedValueSpinner3[0] = jsonData.getString("spinner3");
+
+                    // Используйте значения в вашем коде
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Python py = Python.getInstance();
+                PyObject pyObject = py.getModule("mainForFA");
+                PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1[0], savedValueSpinner2[0]);
+                PyObject result = pyObject.callAttr("update_schedule", savedValueSpinner3[0], curr_tv_text);
+                // получение результата из Python в Java
+                parseJsonArray(String.valueOf(result));
+            }
+        });
+
+        rvDate.setAdapter(dateAdapter);
+
 
 
 
@@ -77,47 +141,26 @@ public class TimeTableActivity extends AppCompatActivity {
 
 
 
-        tt_tvDate_ = (TextView) findViewById(R.id.timetable_tvDate);
-        tt_tvDate_.setText(MainActivity.findPreviousMonday(currentDate));
-        String curr_tv_text = (String) tt_tvDate_.getText();
-
-
-        String fileName = "data.json";
-        try (FileInputStream fis = openFileInput(fileName)) {
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(isr);
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-
-            // Преобразовываем JSON-строку в объект JSONObject
-            JSONObject jsonData = new JSONObject(sb.toString());
-
-            savedValueSpinner1 = jsonData.getString("spinner1");
-            savedValueSpinner2 = jsonData.getString("spinner2");
-            savedValueSpinner3 = jsonData.getString("spinner3");
-
-            // Используйте значения в вашем коде
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
-
-        Python py = Python.getInstance();
-        PyObject pyObject = py.getModule("mainForFA");
-        PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1, savedValueSpinner2);
-        PyObject result = pyObject.callAttr("update_schedule", savedValueSpinner3, curr_tv_text);
-        // получение результата из Python в Java
-        parseJsonArray(String.valueOf(result));
-
-
-
-        Log.d("TimeTableActivity", String.valueOf(result));
 
 
 
 
+
+
+
+
+
+
+    }
+
+    public void reset(){
+        mondayItems.clear();
+        tuesdayItems.clear();
+        wednesdayItems.clear();
+        thursdayItems.clear();
+        fridayItems.clear();
+        saturdayItems.clear();
+        sundayItems.clear();
 
     }
     public void parseJsonArray(String jsonArrayString) {

@@ -7,23 +7,31 @@
     android:layout_height="match_parent"
     tools:context=".TimeTableActivity">
 
-    <TextView
-        android:id="@+id/timetable_tvDate"
-        style="@style/MyTextViewStyle"
+    <!-- Заменил TextView с "Hello" на RecyclerView с горизонтальным расположением элементов -->
+    <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello"
-        android:textSize="40dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.005"/>
+        tools:ignore="MissingConstraints">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/timetable_rvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp" />
+    </FrameLayout>
+
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/timetable_tvDate"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+        tools:ignore="NotSibling">
 
         <LinearLayout
             android:id="@+id/llDay"
@@ -39,8 +47,9 @@
                 android:id="@+id/timetable_tvMonday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="40dp"
-                android:text="Понедельник"/>
+                android:text="Понедельник"
+                android:textSize="40dp" />
+
             <LinearLayout
                 android:id="@+id/llMonday"
                 android:layout_width="match_parent"
@@ -49,18 +58,18 @@
                 <!-- Добавил RecyclerView для динамического создания элементов под каждым днем недели -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/timetable_rvMonday"
+                    style="@style/Recycle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/Recycle"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/timetable_tvTuesday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="40dp"
-                android:text="Вторник"/>
+                android:text="Вторник"
+                android:textSize="40dp" />
 
             <!-- Пример для Вт -->
             <LinearLayout
@@ -73,14 +82,15 @@
                     android:id="@+id/timetable_rvTuesday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/timetable_tvWednesday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="40dp"
-                android:text="Среда"/>
+                android:text="Среда"
+                android:textSize="40dp" />
 
             <!-- Пример для Ср -->
             <LinearLayout
@@ -93,14 +103,15 @@
                     android:id="@+id/timetable_rvWednesday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/timetable_tvThurday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="40dp"
-                android:text="Четверг"/>
+                android:text="Четверг"
+                android:textSize="40dp" />
 
             <!-- Пример для Чт -->
             <LinearLayout
@@ -113,14 +124,15 @@
                     android:id="@+id/timetable_rvThurday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/timetable_tvFriday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="40dp"
-                android:text="Пятница"/>
+                android:text="Пятница"
+                android:textSize="40dp" />
 
             <!-- Пример для Пт -->
             <LinearLayout
@@ -133,14 +145,15 @@
                     android:id="@+id/timetable_rvFriday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/timetable_tvSaturday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="40dp"
-                android:text="Суббота"/>
+                android:text="Суббота"
+                android:textSize="40dp" />
 
             <!-- Пример для Сб -->
             <LinearLayout
@@ -153,14 +166,15 @@
                     android:id="@+id/timetable_rvSaturday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/timetable_tvSunday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="40dp"
-                android:text="Воскресенье"/>
+                android:text="Воскресенье"
+                android:textSize="40dp" />
 
             <!-- Пример для Вс -->
             <LinearLayout
@@ -173,8 +187,17 @@
                     android:id="@+id/timetable_rvSunday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/timetable_tvDate"
+                style="@style/MyTextViewStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Hello"
+                android:textSize="40dp" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
