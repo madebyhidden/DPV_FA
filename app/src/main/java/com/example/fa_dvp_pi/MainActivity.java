@@ -2,6 +2,7 @@ package com.example.fa_dvp_pi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,6 +48,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_first);
+
+        SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+
+        boolean isFirstRun = prefs.getBoolean("isFirstRun", true);
+
+
+        if (isFirstRun) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("isFirstRun", false);
+            editor.apply();
+        }
+        else {
+            Intent intent = new Intent(this, TimeTableActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
 
         mySpinner1 = (Spinner) findViewById(R.id.spinner1);
 
