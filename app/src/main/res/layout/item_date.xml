@@ -13,6 +13,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:gravity="center"
+        android:textColor="#AFDACB"
         />
 
 

@@ -1,15 +1,20 @@
 package com.example.fa_dvp_pi;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
@@ -79,6 +84,8 @@ public class TimeTableActivity extends AppCompatActivity {
         setupDateRecyclerView();
     }
 
+
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -86,7 +93,13 @@ public class TimeTableActivity extends AppCompatActivity {
     }
 
     private void setupDateRecyclerView() {
+
+
+// Создаем адаптер и заполняем его данными
+
         RecyclerView rvDate = findViewById(R.id.timetable_rvDate);
+        SnapHelper snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView(rvDate);
         List<DateAdapter.DateItem> dateItems = createDateItems();
         DateAdapter dateAdapter = new DateAdapter(dateItems, createDateSelectedListener());
         rvDate.setAdapter(dateAdapter);
@@ -156,6 +169,7 @@ public class TimeTableActivity extends AppCompatActivity {
         PyObject pyObject = py.getModule("mainForFA");
         PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1[0], savedValueSpinner2[0]);
         PyObject result = pyObject.callAttr("update_schedule", savedValueSpinner3[0], currentDate);
+
         parseJsonArray(String.valueOf(result));
     }
 
@@ -256,6 +270,11 @@ public class TimeTableActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
+            SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("isFirstRun", true);
+            editor.apply();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             return true;

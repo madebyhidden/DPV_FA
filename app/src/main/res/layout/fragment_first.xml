@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#002B27"
     tools:context=".FirstFragment">
 
     <Spinner
@@ -13,11 +14,13 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:scrollbarSize="20dp"
+        style="@style/DateString"
         android:entries="@array/pi_spinner_types"
         app:layout_constraintBottom_toTopOf="@+id/btnSave"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.195"
-        tools:layout_editor_absoluteX="16dp" />
+        tools:layout_editor_absoluteX="16dp"
+        />
 
     <Spinner
         android:id="@+id/spinner1"
@@ -27,7 +30,7 @@
         android:entries="@array/your_spinner1_entries"
         app:layout_constraintBottom_toTopOf="@+id/btnSave"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.379"
+        app:layout_constraintVertical_bias="0.479"
         tools:layout_editor_absoluteX="16dp" />
 
     <Spinner
@@ -38,7 +41,7 @@
         android:entries="@array/your_spinner2_entries"
         app:layout_constraintBottom_toTopOf="@+id/btnSave"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.504"
+        app:layout_constraintVertical_bias="0.742"
         tools:layout_editor_absoluteX="16dp" />
 
     <Button
@@ -46,12 +49,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+
         android:text="Сохранить"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.291" />
+        app:layout_constraintVertical_bias="0.291"
+        android:textColor="@color/white"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
