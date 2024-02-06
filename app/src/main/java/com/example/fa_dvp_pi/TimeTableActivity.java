@@ -2,9 +2,9 @@ package com.example.fa_dvp_pi;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,8 +25,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 
 public class TimeTableActivity extends AppCompatActivity {
 
@@ -49,80 +53,85 @@ public class TimeTableActivity extends AppCompatActivity {
     List<TimetableAdapter.TimetableItem> saturdayItems = new ArrayList<>();
     List<TimetableAdapter.TimetableItem> sundayItems = new ArrayList<>();
 
+    List<String> weekdays = Arrays.asList("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс");
+
+    Map<String, List<TimetableAdapter.TimetableItem>> scheduleMap = new HashMap<>();
+
+    {
+        scheduleMap.put("Пн", mondayItems);
+        scheduleMap.put("Вт", tuesdayItems);
+        scheduleMap.put("Ср", wednesdayItems);
+        scheduleMap.put("Чт", thursdayItems);
+        scheduleMap.put("Пт", fridayItems);
+        scheduleMap.put("Сб", saturdayItems);
+        scheduleMap.put("Вс", sundayItems);
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table);
 
-        final String[] savedValueSpinner1 = {"Выбрать"};
-        final String[] savedValueSpinner2 = {"Выбрать"};
-        final String[] savedValueSpinner3 = {"Выбрать"};
-        Date currentDate = new Date();
+        initializeViews();
+        setupDateRecyclerView();
+    }
 
-
-        // Получил ссылку на RecyclerView с датами
+    private void setupDateRecyclerView() {
         RecyclerView rvDate = findViewById(R.id.timetable_rvDate);
+        List<DateAdapter.DateItem> dateItems = createDateItems();
+        DateAdapter dateAdapter = new DateAdapter(dateItems, createDateSelectedListener());
+        rvDate.setAdapter(dateAdapter);
+    }
 
+    private List<DateAdapter.DateItem> createDateItems() {
         List<DateAdapter.DateItem> dateItems = new ArrayList<>();
         for (int i = 5; i <= 26; i = i + 7) {
-            if (i < 10) {
-                String dateValue = String.format("2024.02.0%s", i); // ваше значение даты
-                System.out.println(dateValue);
-                dateItems.add(new DateAdapter.DateItem(dateValue));
-            } else {
-                String dateValue = String.format("2024.02.%s", i); // ваше значение даты
-                System.out.println(dateValue);
-                dateItems.add(new DateAdapter.DateItem(dateValue));
-            }
-
+            String dateValue = (i < 10) ? String.format("2024.02.0%s", i) : String.format("2024.02.%s", i);
+            dateItems.add(new DateAdapter.DateItem(dateValue));
         }
+        return dateItems;
+    }
 
+    private DateAdapter.OnDateSelectedListener createDateSelectedListener() {
+        return dateItem -> {
+            reset();
 
-        // Создал адаптер с этим списком и слушателем, который реализует интерфейс OnDateSelectedListener
-        DateAdapter dateAdapter = new DateAdapter(dateItems, new DateAdapter.OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(DateAdapter.DateItem dateItem) {
-                reset();
-                tt_tvDate_ = (TextView) findViewById(R.id.item_date_tvDate);
+            tt_tvDate_ = findViewById(R.id.item_date_tvDate);
+            String curr_tv_text = tt_tvDate_.getText().toString();
+            readJsonDataAndUpdateSchedule(curr_tv_text);
+        };
+    }
 
-                String curr_tv_text = (String) tt_tvDate_.getText();
-
-
-                String fileName = "data.json";
-                try (FileInputStream fis = openFileInput(fileName)) {
-                    InputStreamReader isr = new InputStreamReader(fis);
-                    BufferedReader br = new BufferedReader(isr);
-                    StringBuilder sb = new StringBuilder();
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        sb.append(line);
-                    }
-
-                    // Преобразовываем JSON-строку в объект JSONObject
-                    JSONObject jsonData = new JSONObject(sb.toString());
-
-                    savedValueSpinner1[0] = jsonData.getString("spinner1");
-                    savedValueSpinner2[0] = jsonData.getString("spinner2");
-                    savedValueSpinner3[0] = jsonData.getString("spinner3");
-
-                    // Используйте значения в вашем коде
-                } catch (IOException | JSONException e) {
-                    e.printStackTrace();
-                }
-
-                Python py = Python.getInstance();
-                PyObject pyObject = py.getModule("mainForFA");
-                PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1[0], savedValueSpinner2[0]);
-                PyObject result = pyObject.callAttr("update_schedule", savedValueSpinner3[0], curr_tv_text);
-                // получение результата из Python в Java
-                parseJsonArray(String.valueOf(result));
+    private void readJsonDataAndUpdateSchedule(String currentDate) {
+        String[] savedValueSpinner1 = {"Выбрать"};
+        String[] savedValueSpinner2 = {"Выбрать"};
+        String[] savedValueSpinner3 = {"Выбрать"};
+        String fileName = "data.json";
+        try (FileInputStream fis = openFileInput(fileName)) {
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
             }
-        });
+            JSONObject jsonData = new JSONObject(sb.toString());
+            savedValueSpinner1[0] = jsonData.getString("spinner1");
+            savedValueSpinner2[0] = jsonData.getString("spinner2");
+            savedValueSpinner3[0] = jsonData.getString("spinner3");
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+            Log.d("Error IOException | JSONException", Objects.requireNonNull(e.getMessage()));
+        }
+        Python py = Python.getInstance();
+        PyObject pyObject = py.getModule("mainForFA");
+        PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1[0], savedValueSpinner2[0]);
+        PyObject result = pyObject.callAttr("update_schedule", savedValueSpinner3[0], currentDate);
+        parseJsonArray(String.valueOf(result));
+    }
 
-        rvDate.setAdapter(dateAdapter);
-
-
-        // Добавляем элементы в LinearLayout для Пн
+    private void initializeViews() {
         rvMonday = findViewById(R.id.timetable_rvMonday);
         rvTuesday = findViewById(R.id.timetable_rvTuesday);
         rvWednesday = findViewById(R.id.timetable_rvWednesday);
@@ -130,8 +139,6 @@ public class TimeTableActivity extends AppCompatActivity {
         rvFriday = findViewById(R.id.timetable_rvFriday);
         rvSaturday = findViewById(R.id.timetable_rvSaturday);
         rvSunday = findViewById(R.id.timetable_rvSunday);
-
-
     }
 
     public void reset() {
@@ -147,16 +154,7 @@ public class TimeTableActivity extends AppCompatActivity {
 
     public void parseJsonArray(String jsonArrayString) {
 
-        int count_mon = 0;
-        int count_tue = 0;
-        int count_wed = 0;
-        int count_thr = 0;
-        int count_fri = 0;
-        int count_sat = 0;
-
-
-        // Получил ссылку на RecyclerView для понедельника
-
+//        Log.d("JSON", jsonArrayString);
 
         try {
             // Создаем JSONArray из строки
@@ -175,111 +173,51 @@ public class TimeTableActivity extends AppCompatActivity {
                 String beginLesson = jsonObject.optString("beginLesson", "");
                 String endLesson = jsonObject.optString("endLesson", "");
                 String date = jsonObject.optString("date", "");
-                if (dayOfWeekString.equals("Пн")) {
-                    System.out.println(discipline + beginLesson + endLesson + auditorium + kindOfWork);
-                    mondayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork));
 
-                    count_mon += 1;
+                List<TimetableAdapter.TimetableItem> dayItems = scheduleMap.get(dayOfWeekString);
+                if (dayItems != null) {
+                    dayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork));
                 }
-                if (dayOfWeekString.equals("Вт")) {
-                    tuesdayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork));
-                    count_tue += 1;
-                }
-                if (dayOfWeekString.equals("Ср")) {
-                    wednesdayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork));
-                    count_wed += 1;
-                }
-                if (dayOfWeekString.equals("Чт")) {
-                    thursdayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork));
-                    count_thr += 1;
-                }
-                if (dayOfWeekString.equals("Пт")) {
-                    fridayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork));
-                    count_fri += 1;
-                }
-                if (dayOfWeekString.equals("Сб")) {
-                    saturdayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork));
-                    count_sat += 1;
-                }
-
-
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.d("Error JSONException", Objects.requireNonNull(e.getMessage()));
         }
-        if (count_mon == 0) {
-            mondayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "", ""));
+
+
+        for (String day : weekdays) {
+            List<TimetableAdapter.TimetableItem> dayItems = scheduleMap.get(day);
+            if (dayItems != null && dayItems.isEmpty()) {
+                dayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "", ""));
+            }
+
+            RecyclerView recyclerView = findRecyclerViewByDay(day);
+            TimetableAdapter adapter = new TimetableAdapter(dayItems);
+            assert recyclerView != null;
+            recyclerView.setAdapter(adapter);
         }
-        if (count_tue == 0) {
-            tuesdayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "", ""));
-        }
-        if (count_wed == 0) {
-            wednesdayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "", ""));
-        }
-        if (count_thr == 0) {
-            thursdayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "", ""));
-        }
-        if (count_fri == 0) {
-            fridayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "", ""));
-        }
-        if (count_sat == 0) {
-            saturdayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "", ""));
-        }
-        sundayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "", ""));
-
-        mondayAdapter = new TimetableAdapter(mondayItems);
-        rvMonday.setAdapter(mondayAdapter);
-
-
-        tuesdayAdapter = new TimetableAdapter(tuesdayItems);
-        rvTuesday.setAdapter(tuesdayAdapter);
-
-
-        wednesdayAdapter = new TimetableAdapter(wednesdayItems);
-        rvWednesday.setAdapter(wednesdayAdapter);
-
-
-        thursdayAdapter = new TimetableAdapter(thursdayItems);
-        rvThursday.setAdapter(thursdayAdapter);
-
-        fridayAdapter = new TimetableAdapter(fridayItems);
-        rvFriday.setAdapter(fridayAdapter);
-
-        saturdayAdapter = new TimetableAdapter(saturdayItems);
-        rvSaturday.setAdapter(saturdayAdapter);
-
-        sundayAdapter = new TimetableAdapter(sundayItems);
-        rvSunday.setAdapter(sundayAdapter);
 
     }
 
-    private void addItemsToLinearLayout(List<String> data, LinearLayout linearLayout) {
-        int counter = 0;
-        LinearLayout.LayoutParams layoutParams_disc = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-
-        );
-        System.out.println(data.get(0));
-        for (String item : data) {
-
-            if (counter % 2 == 0) {
-                TextView textView = new TextView(this);
-                textView.setText(item);
-                textView.setTextSize(20);
-                // Здесь вы можете настроить стили для TextView и другие параметры
-                linearLayout.addView(textView, layoutParams_disc);
-
-            } else {
-                TextView textView = new TextView(this);
-                textView.setText(item);
-                textView.setTextSize(10);
-                // Здесь вы можете настроить стили для TextView и другие параметры
-                linearLayout.addView(textView, layoutParams_disc);
-
-            }
-            counter += 1;
+    private RecyclerView findRecyclerViewByDay(String day) {
+        switch (day) {
+            case "Пн":
+                return rvMonday;
+            case "Вт":
+                return rvTuesday;
+            case "Ср":
+                return rvWednesday;
+            case "Чт":
+                return rvThursday;
+            case "Пт":
+                return rvFriday;
+            case "Сб":
+                return rvSaturday;
+            case "Вс":
+                return rvSunday;
+            default:
+                return null;
         }
     }
 
@@ -291,15 +229,11 @@ public class TimeTableActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            // Здесь вы можете указать активность, которую хотите открыть при нажатии на кнопку настроек
+        if (item.getItemId() == R.id.action_settings) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
