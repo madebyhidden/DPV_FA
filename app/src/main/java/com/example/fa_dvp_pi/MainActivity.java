@@ -1,28 +1,19 @@
 package com.example.fa_dvp_pi;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.Log;
-import android.view.View;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.ui.AppBarConfiguration;
 
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
@@ -81,6 +72,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveData();
+
+                try {
+                    Intent intent = new Intent(view.getContext(), TimeTableActivity.class);
+                    startActivity(intent);
+
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+
             }
         });
 

@@ -1,6 +1,7 @@
 package com.example.fa_dvp_pi;
 
 import android.content.Intent;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -77,6 +79,12 @@ public class TimeTableActivity extends AppCompatActivity {
         setupDateRecyclerView();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        updatePage();
+    }
+
     private void setupDateRecyclerView() {
         RecyclerView rvDate = findViewById(R.id.timetable_rvDate);
         List<DateAdapter.DateItem> dateItems = createDateItems();
@@ -96,12 +104,32 @@ public class TimeTableActivity extends AppCompatActivity {
     private DateAdapter.OnDateSelectedListener createDateSelectedListener() {
         return dateItem -> {
             reset();
-
-            tt_tvDate_ = findViewById(R.id.item_date_tvDate);
-            String curr_tv_text = tt_tvDate_.getText().toString();
-            readJsonDataAndUpdateSchedule(curr_tv_text);
+            updatePage();
         };
     }
+
+    private void updatePage(){
+        tt_tvDate_ = findViewById(R.id.item_date_tvDate);
+
+        if (tt_tvDate_ != null) {
+            String curr_tv_text = tt_tvDate_.getText().toString();
+            readJsonDataAndUpdateSchedule(curr_tv_text);
+        } else {
+
+            readJsonDataAndUpdateSchedule(getMondayDate());
+            Log.e("TextView", "TextView tt_tvDate_ is null");
+        }
+    }
+
+    public static String getMondayDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        return String.format(Locale.US, "%04d.%02d.%02d", year, month, dayOfMonth);
+    }
+
 
     private void readJsonDataAndUpdateSchedule(String currentDate) {
         String[] savedValueSpinner1 = {"Выбрать"};
@@ -153,8 +181,6 @@ public class TimeTableActivity extends AppCompatActivity {
     }
 
     public void parseJsonArray(String jsonArrayString) {
-
-//        Log.d("JSON", jsonArrayString);
 
         try {
             // Создаем JSONArray из строки
