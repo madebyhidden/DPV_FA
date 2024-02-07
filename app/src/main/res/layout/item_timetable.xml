@@ -53,6 +53,14 @@
             android:layout_marginBottom="10dp"
             android:textSize="16sp" />
 
+        <TextView
+            android:id="@+id/item_timetable_tvPrepod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#B7DFD9"
+            android:textSize="16sp"
+            tools:ignore="RtlHardcoded" />
+
         <!-- Добавил TextView для аудитории -->
         <TextView
             android:id="@+id/item_timetable_tvRoom"
@@ -64,6 +72,7 @@
             tools:ignore="RtlHardcoded" />
 
         <!-- Добавил TextView для типа дисциплины -->
+
 
 
     </LinearLayout>

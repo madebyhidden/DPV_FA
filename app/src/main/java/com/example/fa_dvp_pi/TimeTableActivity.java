@@ -79,7 +79,7 @@ public class TimeTableActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table);
-
+        reset();
         initializeViews();
         setupDateRecyclerView();
     }
@@ -89,7 +89,9 @@ public class TimeTableActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        reset();
         updatePage();
+
     }
 
     private void setupDateRecyclerView() {
@@ -212,11 +214,13 @@ public class TimeTableActivity extends AppCompatActivity {
                 String discipline = jsonObject.optString("discipline", "");
                 String beginLesson = jsonObject.optString("beginLesson", "");
                 String endLesson = jsonObject.optString("endLesson", "");
+                String prepod_name = jsonObject.optString("lecturer_title", "");
+                System.out.println(prepod_name);
                 String date = jsonObject.optString("date", "");
 
                 List<TimetableAdapter.TimetableItem> dayItems = scheduleMap.get(dayOfWeekString);
                 if (dayItems != null) {
-                    dayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork));
+                    dayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork, prepod_name));
                 }
             }
 
@@ -229,7 +233,7 @@ public class TimeTableActivity extends AppCompatActivity {
         for (String day : weekdays) {
             List<TimetableAdapter.TimetableItem> dayItems = scheduleMap.get(day);
             if (dayItems != null && dayItems.isEmpty()) {
-                dayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "", ""));
+                dayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "", "", ""));
             }
 
             RecyclerView recyclerView = findRecyclerViewByDay(day);
