@@ -15,6 +15,16 @@
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints">
 
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="49dp"
+            android:layout_height="13dp"
+            android:layout_gravity="center_vertical|right"
+            android:contentDescription="Arrow"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:src="@drawable/arrowtrans" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/timetable_rvDate"
             android:layout_width="wrap_content"
@@ -39,6 +49,7 @@
             android:id="@+id/llDay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:orientation="vertical">
 
             <!-- Добавьте здесь элементы для каждого дня недели в коде -->
@@ -49,6 +60,7 @@
                 android:id="@+id/timetable_tvMonday"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
                 style="@style/DateString"
                 android:text="Понедельник"
                  />
@@ -64,7 +76,8 @@
                     style="@style/Recycle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    />
             </LinearLayout>
 
             <TextView
@@ -72,6 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Вторник"
+                android:layout_marginLeft="15dp"
                 style="@style/DateString"
                  />
 
@@ -94,6 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Среда"
+                android:layout_marginLeft="15dp"
                 style="@style/DateString"
                 />
 
@@ -116,6 +131,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Четверг"
+                android:layout_marginLeft="15dp"
                 style="@style/DateString"
                  />
 
@@ -138,6 +154,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Пятница"
+                android:layout_marginLeft="15dp"
                 style="@style/DateString"
                  />
 
@@ -160,6 +177,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Суббота"
+                android:layout_marginLeft="15dp"
                 style="@style/DateString"
                  />
 
@@ -182,6 +200,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Воскресенье"
+                android:layout_marginLeft="15dp"
                 style="@style/DateString"
                  />
 

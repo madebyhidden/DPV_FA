@@ -240,6 +240,8 @@ public class TimeTableActivity extends AppCompatActivity {
             TimetableAdapter adapter = new TimetableAdapter(dayItems);
             assert recyclerView != null;
             recyclerView.setAdapter(adapter);
+            recyclerView.setNestedScrollingEnabled(false);
+
         }
 
     }

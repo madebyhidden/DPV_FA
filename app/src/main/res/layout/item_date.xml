@@ -1,21 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="15dp"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="8dp"
+
+
+    >
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_date"
+        android:layout_width="315dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:cardBackgroundColor="#3B6867"
+        app:cardCornerRadius="10dp">
+
+        <TextView
+            android:id="@+id/item_date_tvDate"
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="#AFDACB"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </androidx.cardview.widget.CardView>
+
+
 
     <!-- Добавил TextView для даты -->
-    <TextView
-        android:id="@+id/item_date_tvDate"
-        android:layout_width="396dp"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:textColor="#AFDACB"
-        />
-
 
 
 </LinearLayout>

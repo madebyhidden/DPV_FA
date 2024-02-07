@@ -109,7 +109,11 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.Time
             holder.tvSubject.setText(item.getSubject());
             holder.tvTime.setText(item.getStartTime() + " - " + item.getEndTime());
             holder.tvRoom.setText(item.getRoom());
-            holder.tvType.setText(item.getType());
+            if (item.getType().equals("Практические (семинарские) занятия")) {
+                holder.tvType.setText("Семинар");
+            }else {
+                holder.tvType.setText(item.getType());
+            }
             holder.tvPrepod.setText(item.getPrepod_name());
         }
 

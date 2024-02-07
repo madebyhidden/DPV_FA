@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fa_dvp_pi.R;
@@ -15,6 +16,7 @@ import com.example.fa_dvp_pi.R;
 import java.util.List;
 
 public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder> {
+
 
     // Создал класс для хранения данных об одном элементе
     public static class DateItem {
@@ -59,10 +61,12 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
         private TextView tvDate; // TextView для даты
         private TextView tvDay; // TextView для дня недели
 
+
         // Создал конструктор для инициализации ссылок
         public DateViewHolder(@NonNull View itemView) {
             super(itemView);
             tvDate = itemView.findViewById(R.id.item_date_tvDate);
+
         }
     }
 
@@ -79,11 +83,19 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
     // Переопределил метод для связи данных с элементом
     @Override
     public void onBindViewHolder(@NonNull DateViewHolder holder, @SuppressLint("RecyclerView") int position) {
+
+
+
         // Получил данные об одном элементе из списка по позиции
         DateItem item = dateItems.get(position);
+
+
         // Установил текст для каждого TextView из данных
         holder.tvDate.setText(item.getDate());
         // Добавил слушатель для обработки нажатий на элемент
+
+
+        CardView card = holder.itemView.findViewById(R.id.card_date);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,10 +110,10 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
         // Добавил подсветку для выбранного элемента
         if (position == selectedPosition) {
             // Установил синий фон для выбранного элемента
-            holder.itemView.setBackgroundColor(Color.parseColor("teal"));
+            card.setCardBackgroundColor(Color.parseColor("teal"));
         } else {
             // Установил прозрачный фон для остальных элементов
-            holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+            card.setCardBackgroundColor(Color.parseColor("#3B6867"));
         }
     }
 
