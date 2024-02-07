@@ -16,6 +16,7 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.Time
 
     // Создал класс для хранения данных об одном элементе
     public static class TimetableItem {
+        private String prepod_name;
         private String subject; // дисциплина
         private String startTime; // начало времени
         private String endTime; // конец времени
@@ -23,12 +24,13 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.Time
         private String type; // тип дисциплины
 
         // Создал конструктор для инициализации полей
-        public TimetableItem(String subject, String startTime, String endTime, String room, String type) {
+        public TimetableItem(String subject, String startTime, String endTime, String room, String type, String prepod_name) {
             this.subject = subject;
             this.startTime = startTime;
             this.endTime = endTime;
             this.room = room;
             this.type = type;
+            this.prepod_name = prepod_name;
         }
 
         // Создал геттеры для получения значений полей
@@ -51,6 +53,11 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.Time
         public String getType() {
             return type;
         }
+
+        public String getPrepod_name() {
+            return prepod_name;
+        }
+
     }
 
     // Создал список для хранения данных обо всех элементах
@@ -67,6 +74,7 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.Time
         private TextView tvTime; // TextView для начала и конца времени
         private TextView tvRoom; // TextView для аудитории
         private TextView tvType; // TextView для типа дисциплины
+        private TextView tvPrepod; // TextView для типа дисциплины
 
         // Создал конструктор для инициализации ссылок
         public TimetableViewHolder(@NonNull View itemView) {
@@ -75,6 +83,7 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.Time
             tvTime = itemView.findViewById(R.id.item_timetable_tvTime);
             tvRoom = itemView.findViewById(R.id.item_timetable_tvRoom);
             tvType = itemView.findViewById(R.id.item_timetable_tvType);
+            tvPrepod = itemView.findViewById(R.id.item_timetable_tvPrepod);
         }
     }
 
@@ -101,6 +110,7 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.Time
             holder.tvTime.setText(item.getStartTime() + " - " + item.getEndTime());
             holder.tvRoom.setText(item.getRoom());
             holder.tvType.setText(item.getType());
+            holder.tvPrepod.setText(item.getPrepod_name());
         }
 
     }
