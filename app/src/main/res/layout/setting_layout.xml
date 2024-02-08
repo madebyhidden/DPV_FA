@@ -27,7 +27,7 @@
 
 
     <TableRow
-        android:id="@+id/textViewPI"
+        android:id="@+id/textViewTCBM"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -62,7 +62,7 @@
     </TableRow>
 
     <TableRow
-        android:id="@+id/textViewITM"
+        android:id="@+id/textViewPI"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -97,7 +97,7 @@
     </TableRow>
 
     <TableRow
-        android:id="@+id/textViewTCBM"
+        android:id="@+id/textViewITM"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"

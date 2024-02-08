@@ -80,16 +80,29 @@ public class TimeTableActivity extends AppCompatActivity {
         scheduleMap.put("Вс", sundayItems);
     }
 
-    private final StringBuilder content = new StringBuilder();
-
+    private String content;
+    private void make_spisok_intime()
     {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("direction.txt"))) {
+        String fileName = "dir.json";
+        try (FileInputStream fis = openFileInput(fileName)) {
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
             String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                content.append(line).append("\n");
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
             }
-        } catch (IOException e) {
-            System.err.println("Ошибка при чтении файла: " + e.getMessage());
+
+            // Преобразовываем JSON-строку в объект JSONObject
+            JSONObject jsonData = new JSONObject(sb.toString());
+
+            // Получаем значения из объекта JSONObject
+            content = jsonData.getString("direction");
+
+
+            // Используйте значения в вашем коде
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
         }
 
     }
@@ -100,7 +113,7 @@ public class TimeTableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table);
         reset();
-
+        make_spisok_intime();
         initializeViews();
         setupDateRecyclerView();
     }
@@ -301,6 +314,8 @@ public class TimeTableActivity extends AppCompatActivity {
 
         PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1[0],
                 savedValueSpinner2[0], content);
+
+        System.out.println(content);
         PyObject result = pyObject.callAttr("update_schedule", savedValueSpinner3[0], currentDate);
 
         parseJsonArray(String.valueOf(result));
@@ -328,7 +343,7 @@ public class TimeTableActivity extends AppCompatActivity {
     }
 
     public void parseJsonArray(String jsonArrayString) {
-
+        boolean check = true;
         try {
             // Создаем JSONArray из строки
             JSONArray jsonArray = new JSONArray(jsonArrayString);
@@ -350,6 +365,14 @@ public class TimeTableActivity extends AppCompatActivity {
 
                 List<TimetableAdapter.TimetableItem> dayItems = scheduleMap.get(dayOfWeekString);
                 if (dayItems != null) {
+                    if(discipline.equals("Иностранный язык в профессиональной сфере")){
+                        if (check) {
+                            dayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, "Персонально", kindOfWork, prepod_name));
+                            check = false;
+
+                        }
+                        continue;
+                    }
                     dayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork, prepod_name));
                 }
             }

@@ -28,8 +28,8 @@ def PI():
                   'Модуль "Разработка распределенных приложений"',
                   'Модуль "Технологии машинного обучения"', 'Модуль "Финтех"']
 
-    group_ = {'ПИ21–1': 110687, 'ПИ21–2': 110809, 'ПИ21–3': 110811, 'ПИ21–4': 110812, 'ПИ21–5': 110813, 'ПИ21–6': 110814,
-              'ПИ21–7': 110815}
+    group_ = {'ПИ21-1': 110687, 'ПИ21-2': 110809, 'ПИ21-3': 110811, 'ПИ21-4': 110812, 'ПИ21-5': 110813, 'ПИ21-6': 110814,
+              'ПИ21-7': 110815}
 
     specializations = {
         "Модуль ERP-системы": [
@@ -77,7 +77,7 @@ def TCBM():
                   'Модуль "ИТ-менеджмент"',
                   'Модуль "Технологии анализа данных"']
 
-    group_ = {'ТЦБМ21–1': 111294, 'ТЦБМ21–2': 111295, 'ТЦБМ21–3': 111296, 'ТЦБМ21–4': 111297, 'ТЦБМ21–5': 111298}
+    group_ = {'ТЦБМ21-1': 111294, 'ТЦБМ21-2': 111295, 'ТЦБМ21-3': 111296, 'ТЦБМ21-4': 111297, 'ТЦБМ21-5': 111298}
 
     specializations = {
         "Модуль Цифровая трансформация бизнеса": [
@@ -110,7 +110,7 @@ def ITM():
     directions = ['Модуль "КИС для среднего и крупного бизнеса"', 'Модуль "Информационно-аналитические технологии"', 'Модуль "Технологии управления коллективной работой"',
                   'Модуль "Сквозные технологии цифровой экономики"']
 
-    group_ = {'ИТМ21–1': 111289, 'ИТМ21–2': 111290, 'ИТМ21–3': 111291, 'ИТМ21–4': 111292, 'ИТМ21–5': 111293}
+    group_ = {'ИТМ21-1': 111289, 'ИТМ21-2': 111290, 'ИТМ21-3': 111291, 'ИТМ21-4': 111292, 'ИТМ21-5': 111293}
 
     specializations =  {
         "Модуль КИС для среднего и крупного бизнеса": [
@@ -156,43 +156,6 @@ def calculate_end_date(start_date):
     return end_datetime.strftime('%Y.%m.%d')
 
 
-def pretty_print_schedule(group, matches, count=0):
-    if matches:
-
-        result_text = ''
-        header = f"{'Date':<16} {'Type':<39}  {'Discipline':<55} {'Time':<19} {'Auditorium':<15} \n"
-        result_text += header
-        result_text += '-' * len(header) + '\n'
-        if group in ['ПИ21–5', 'ПИ21–6', 'ПИ21–7']:
-            for match in matches:
-                if match['auditorium'] == 'ЛП51_1/0614':
-                    continue
-
-                row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {match['auditorium']:<15}\n"
-                result_text += row
-            return result_text
-        elif group in ['ПИ21–1', 'ПИ21–2']:
-            booling = False
-            for match in matches:
-
-                if match['discipline'] == 'Иностранный язык в профессиональной сфере':
-                    count += 1
-                row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {match['auditorium']:<15}\n"
-                result_text += row
-            return result_text
-        elif group in ['ПИ21–3', 'ПИ21–4']:
-            booling = False
-            for match in matches:
-
-                if match['discipline'] == 'Иностранный язык в профессиональной сфере':
-                    count += 1
-                row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {match['auditorium']:<15}\n"
-                result_text += row
-
-            return result_text
-    else:
-        return 'Расписание не найдено.'
-
 
 def find_classes_for_date_and_disciplines(disciplines, schedule):
     matches = []
@@ -208,6 +171,7 @@ def update_disciplines(name1, name2, direction):
     if direction=="PI": PI()
     if direction=="TCBM": TCBM()
     if direction=="ITM": ITM()
+
 
     selected_direction = name1
 
@@ -226,7 +190,14 @@ def update_disciplines(name1, name2, direction):
 
 #
 def update_schedule(group, start_date):
+
+    print(group_, " 0 ", specializations, " 0 ", basic_disciplines)
     finish_date = calculate_end_date(start_date)
     schedule_data = get_schedule(group_[group], start_date, finish_date)
     matching_classes = find_classes_for_date_and_disciplines(user_disciplines, schedule_data)
     return  matching_classes
+
+
+update_disciplines('test', 'tesr2', 'PI')
+update_schedule('ПИ21-7', '2024.02.05')
+

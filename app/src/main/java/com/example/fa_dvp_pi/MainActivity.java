@@ -46,39 +46,90 @@ public class MainActivity extends AppCompatActivity {
     private Spinner mySpinner3;
     private Button btnSave__;
     public String monday_finder;
-    private final StringBuilder content = new StringBuilder();
 
     private List<String> subjectList = new ArrayList<>();
     List<String> groupList = new ArrayList<>();
 
 
+    private String content;
+
+
+    public void make_spisoks()
     {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("direction.txt"))) {
+        String fileName = "dir.json";
+        try (FileInputStream fis = openFileInput(fileName)) {
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
             String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                content.append(line).append("\n");
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
             }
-        } catch (IOException e) {
-            System.err.println("Ошибка при чтении файла: " + e.getMessage());
+
+            // Преобразовываем JSON-строку в объект JSONObject
+            JSONObject jsonData = new JSONObject(sb.toString());
+
+            // Получаем значения из объекта JSONObject
+            content = jsonData.getString("direction");
+
+
+            // Используйте значения в вашем коде
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
         }
 
+        if(content.equals("PI")) {
 
-        subjectList.add("Модуль \"ERP-системы\"");
-        subjectList.add("Модуль \"Системное программирование\"");
-        subjectList.add("Модуль \"Управление разработкой\"");
-        subjectList.add("Модуль \"Технологии искусственного интеллекта\"");
-        subjectList.add("Модуль \"Языки и методы программирования\"");
-        subjectList.add("Модуль \"Разработка распределенных приложений\"");
-        subjectList.add("Модуль \"Технологии машинного обучения\"");
-        subjectList.add("Модуль \"Финтех\"");
+            subjectList.add("Модуль ERP-системы");
+            subjectList.add("Модуль Системное программирование");
+            subjectList.add("Модуль Управление разработкой");
+            subjectList.add("Модуль Технологии искусственного интеллекта");
+            subjectList.add("Модуль Языки и методы программирования");
+            subjectList.add("Модуль Разработка распределенных приложений");
+            subjectList.add("Модуль Технологии машинного обучения");
+            subjectList.add("Модуль Финтех");
 
-        groupList.add("ПИ21-1");
-        groupList.add("ПИ21-2");
-        groupList.add("ПИ21-3");
-        groupList.add("ПИ21-4");
-        groupList.add("ПИ21-5");
-        groupList.add("ПИ21-6");
-        groupList.add("ПИ21-7");
+            groupList.add("ПИ21-1");
+            groupList.add("ПИ21-2");
+            groupList.add("ПИ21-3");
+            groupList.add("ПИ21-4");
+            groupList.add("ПИ21-5");
+            groupList.add("ПИ21-6");
+            groupList.add("ПИ21-7");
+        }
+
+        if(content.equals("ITM")) {
+            System.out.println("Love ITM");
+            subjectList.add("Модуль КИС для среднего и крупного бизнеса");
+            subjectList.add("Модуль Информационно-аналитические технологии");
+            subjectList.add("Модуль Технологии управления коллективной работой");
+            subjectList.add("Модуль Сквозные технологии цифровой экономики");
+
+            groupList.add("ИТМ21-1");
+            groupList.add("ИТМ21-2");
+            groupList.add("ИТМ21-3");
+            groupList.add("ИТМ21-4");
+            groupList.add("ИТМ21-5");
+        }
+
+        if(content.equals("TCBM")) {
+            subjectList.add("'Модуль Цифровая трансформация бизнеса");
+            subjectList.add("Модуль Управление цифровыми ресурсами компании");
+            subjectList.add("Модуль ИТ-менеджмент");
+            subjectList.add("Модуль Технологии анализа данных");
+            subjectList.add("Модуль Языки и методы программирования");
+            subjectList.add("Модуль Разработка распределенных приложений");
+            subjectList.add("Модуль Технологии машинного обучения");
+            subjectList.add("Модуль Финтех");
+
+            groupList.add("ТЦБМ21-1");
+            groupList.add("ТЦБМ21-2");
+            groupList.add("ТЦБМ21-3");
+            groupList.add("ТЦБМ21-4");
+            groupList.add("ТЦБМ21-5");
+        }
+
+        System.out.println(content);
 
     }
 
@@ -86,7 +137,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_first);
-
+        make_spisoks();
+        System.out.println(String.valueOf(content));
 
 
         mySpinner1 = (Spinner) findViewById(R.id.spinner1);
@@ -184,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
 //        adapter = (ArrayAdapter<String>) mySpinner2.getAdapter();
 //        int spinner2Position = adapter.getPosition(savedValueSpinner2);
 //        mySpinner2.setSelection(spinner2Position);
-
+//
 //        adapter = (ArrayAdapter<String>) mySpinner3.getAdapter();
 //        int spinner3Position = adapter.getPosition(savedValueSpinner3);
 //        mySpinner3.setSelection(spinner3Position);
