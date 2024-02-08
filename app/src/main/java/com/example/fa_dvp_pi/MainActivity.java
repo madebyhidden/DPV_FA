@@ -85,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
 
         Python py = Python.getInstance();
         PyObject pyObject = py.getModule("mainForFA");
-        pyObject.callAttr("update_disciplines", selectedValueSpinner1, selectedValueSpinner2);
+        pyObject.callAttr("update_disciplines", selectedValueSpinner1,
+                selectedValueSpinner2, "PI");
 
         JSONObject jsonData = new JSONObject();
         try {
