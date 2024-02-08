@@ -14,6 +14,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints">
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="49dp"
+            android:layout_height="13dp"
+            android:layout_gravity="center_vertical|left"
+            android:rotation="180"
+            android:contentDescription="Arrow"
+            android:layout_marginTop="2dp"
+            android:alpha="0.5"
+            android:scaleX="2"
+            android:scaleY="2"
+            android:src="@drawable/arrowtrans" />
 
         <ImageView
             android:id="@+id/imageView3"
@@ -21,9 +33,13 @@
             android:layout_height="13dp"
             android:layout_gravity="center_vertical|right"
             android:contentDescription="Arrow"
+            android:layout_marginTop="2dp"
+            android:alpha="0.5"
             android:scaleX="2"
             android:scaleY="2"
             android:src="@drawable/arrowtrans" />
+
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/timetable_rvDate"
