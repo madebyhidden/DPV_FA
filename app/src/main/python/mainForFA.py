@@ -14,52 +14,127 @@ null_dull = {'auditorium': '', 'beginLesson': '', 'building': '', 'date': '', 'd
              'kindOfWork': '',
              'dayOfWeekString': ''}
 
-# Названия направлений
-directions = ['Модуль "ERP-системы"', 'Модуль "Системное программирование"', 'Модуль "Управление разработкой"',
-              'Модуль "Технологии искусственного интеллекта"', 'Модуль "Языки и методы программирования"',
-              'Модуль "Разработка распределенных приложений"',
-              'Модуль "Технологии машинного обучения"', 'Модуль "Финтех"']
+directions = []
+group_ = {}
+specializations = {}
+basic_disciplines = []
+user_disciplines = []
 
-group_ = {'ПИ21–1': 110687, 'ПИ21–2': 110809, 'ПИ21–3': 110811, 'ПИ21–4': 110812, 'ПИ21–5': 110813, 'ПИ21–6': 110814,
-          'ПИ21–7': 110815}
+def PI():
+    global directions, group_, specializations, basic_disciplines, user_disciplines
+    # Названия направлений
+    directions = ['Модуль "ERP-системы"', 'Модуль "Системное программирование"', 'Модуль "Управление разработкой"',
+                  'Модуль "Технологии искусственного интеллекта"', 'Модуль "Языки и методы программирования"',
+                  'Модуль "Разработка распределенных приложений"',
+                  'Модуль "Технологии машинного обучения"', 'Модуль "Финтех"']
 
-specializations = {
-    "Модуль ERP-системы": [
-        "Разработка корпоративных и облачных приложений",
-        "Корпоративные информационные системы",
-    ],
-    "Модуль Системное программирование": [
-        "Разработка эффективных вычислительных алгоритмов",
-        "Низкоуровневое программирование",
-    ],
-    "Модуль Управление разработкой": [
-        "Управление качеством программных систем",
-        "Проектирование информационных систем",
-    ],
-    "Модуль Технологии искусственного интеллекта": [
-        "Технологии и алгоритмы анализа сетевых моделей",
-    ],
-    "Модуль Языки и методы программирования": [
-        "Программирование в среде R",
-    ],
-    "Модуль Разработка распределенных приложений": [
-        "Основы технологий интернета вещей",
-    ],
-    "Модуль Технологии машинного обучения": [
-        "Оптимизационные задачи в машинном обучении",
-    ],
-    "Модуль Финтех": [
-        "Теоретические основы финансовых технологий",
-    ],
-}
+    group_ = {'ПИ21–1': 110687, 'ПИ21–2': 110809, 'ПИ21–3': 110811, 'ПИ21–4': 110812, 'ПИ21–5': 110813, 'ПИ21–6': 110814,
+              'ПИ21–7': 110815}
+
+    specializations = {
+        "Модуль ERP-системы": [
+            "Разработка корпоративных и облачных приложений",
+            "Корпоративные информационные системы",
+        ],
+        "Модуль Системное программирование": [
+            "Разработка эффективных вычислительных алгоритмов",
+            "Низкоуровневое программирование",
+        ],
+        "Модуль Управление разработкой": [
+            "Управление качеством программных систем",
+            "Проектирование информационных систем",
+        ],
+        "Модуль Технологии искусственного интеллекта": [
+            "Технологии и алгоритмы анализа сетевых моделей",
+        ],
+        "Модуль Языки и методы программирования": [
+            "Программирование в среде R",
+        ],
+        "Модуль Разработка распределенных приложений": [
+            "Основы технологий интернета вещей",
+        ],
+        "Модуль Технологии машинного обучения": [
+            "Оптимизационные задачи в машинном обучении",
+        ],
+        "Модуль Финтех": [
+            "Теоретические основы финансовых технологий",
+        ],
+    }
 
 
-basic_disciplines = ['Иностранный язык в профессиональной сфере', 'Информационное право',
-                     'Машинное обучение в семантическом и сетевом анализе', 'Программная инженерия',
-                     'Бухгалтерские информационные системы']
+    basic_disciplines = ['Иностранный язык в профессиональной сфере', 'Информационное право',
+                         'Машинное обучение в семантическом и сетевом анализе', 'Программная инженерия',
+                         'Бухгалтерские информационные системы']
 
-# Список дисциплин пользователя (по умолчанию базовые дисциплины)
-user_disciplines = basic_disciplines.copy()
+    # Список дисциплин пользователя (по умолчанию базовые дисциплины)
+    user_disciplines = basic_disciplines.copy()
+
+
+def TCBM():
+    global directions, group_, specializations, basic_disciplines, user_disciplines
+    directions = ['Модуль "Цифровая трансформация бизнеса"',
+                  'Модуль "Управление цифровыми ресурсами компании"',
+                  'Модуль "ИТ-менеджмент"',
+                  'Модуль "Технологии анализа данных"']
+
+    group_ = {'ТЦБМ21–1': 111294, 'ТЦБМ21–2': 111295, 'ТЦБМ21–3': 111296, 'ТЦБМ21–4': 111297, 'ТЦБМ21–5': 111298}
+
+    specializations = {
+        "Модуль Цифровая трансформация бизнеса": [
+            "Технологии анализа, оценки и контроля предпринимательских рисков",
+            "Финансовый анализ деятельности высокотехнологичных компаний",
+        ],
+        "Модуль Управление цифровыми ресурсами компании": [
+            "Основы управления ИТ-сервисами",
+        ],
+        "Модуль ИТ-менеджмент": [
+            "Корпоративные информационные системы на базе 1С",
+            "Корпоративные информационные системы (финансовый сектор)",
+        ],
+        "Модуль Технологии анализа данных": [
+            "Технологии и алгоритмы анализа сетевых моделей",
+        ],
+    }
+
+    basic_disciplines = ['Иностранный язык в профессиональной сфере', 'Управление данными предприятия',
+                     'Цифровые экосистемы и платформы', 'Технологии искусственного ителекта',
+                     'Практикум по цифровым бизнес-моделям']
+
+    # Список дисциплин пользователя (по умолчанию базовые дисциплины)
+    user_disciplines = basic_disciplines.copy()
+
+
+def ITM():
+    global directions, group_, specializations, basic_disciplines, user_disciplines
+
+    directions = ['Модуль "КИС для среднего и крупного бизнеса"', 'Модуль "Информационно-аналитические технологии"', 'Модуль "Технологии управления коллективной работой"',
+                  'Модуль "Сквозные технологии цифровой экономики"']
+
+    group_ = {'ИТМ21–1': 111289, 'ИТМ21–2': 111290, 'ИТМ21–3': 111291, 'ИТМ21–4': 111292, 'ИТМ21–5': 111293}
+
+    specializations =  {
+        "Модуль КИС для среднего и крупного бизнеса": [
+            "Корпоративные информационные системы на базе 1С",
+            "Корпоративные информационные системы (отраслевые решения)"
+        ],
+        "Модуль Информационно-аналитические технологии": [
+            "Платформы бизнес-аналитики"
+        ],
+        "Модуль Технологии управления коллективной работой": [
+            "Практикум Развитие дизайн-мышления",
+            "Информационные технологии разработки корпоративного портала"
+        ],
+        "Модуль Сквозные технологии цифровой экономики":[
+            "Мобильные технологии"
+        ],
+    }
+
+    basic_disciplines = ['Иностранный язык в профессиональной сфере', 'Управление данными предприятия',
+                         'Основы управления ИТ-сервисами', 'Практикум по ИТ-менеджменту',
+                        'Информационные технологии цифрового предприятия']
+
+    # Список дисциплин пользователя (по умолчанию базовые дисциплины)
+    user_disciplines = basic_disciplines.copy()
 
 def get_from_studio(name1, name2):
     a = name1+ " KKK  " +  name2
@@ -117,68 +192,8 @@ def pretty_print_schedule(group, matches, count=0):
             return result_text
     else:
         return 'Расписание не найдено.'
-#
-#
-#
-# def pretty_print_schedule( matches, count=0):
-#
-#     if matches:
-#
-#         result_text = ''
-#         header = f"{'Date':<16} {'Type':<39}  {'Discipline':<55} {'Time':<19} {'Auditorium':<15} \n"
-#         result_text += header
-#         result_text += '-' * len(header) + '\n'
-#         if combobox_group.get() in ['ПИ21-5', 'ПИ21-6', 'ПИ21-7']:
-#             for match in matches:
-#                 if match['auditorium'] == 'ЛП51_1/0614':
-#                     continue
-#                 if count == 0 or count == 5:
-#                     if count == 0:
-#                         row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {'Персон. Ауд.':<15}\n"
-#                         result_text += row
-#                     else:
-#                         row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {match['auditorium']:<15}\n"
-#                         result_text += row
-#                 if match['discipline'] == 'Иностранный язык в профессиональной сфере':
-#                     count += 1
-#
-#             return result_text
-#         elif combobox_group.get() in ['ПИ21-1', 'ПИ21-2']:
-#             booling = False
-#             for match in matches:
-#
-#                 if match['discipline'] == 'Иностранный язык в профессиональной сфере':
-#                     count += 1
-#                 if count == 1:
-#                     row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {'Персон. Ауд.':<15}\n"
-#                     result_text += row
-#                     booling = True
-#                 elif count == 0 or count == 4:
-#                     row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {match['auditorium']:<15}\n"
-#                     result_text += row
-#                 if count == 3:
-#                     count += 1
-#             return result_text
-#         elif combobox_group.get() in ['ПИ21-3', 'ПИ21-4']:
-#             booling = False
-#             for match in matches:
-#
-#                 if match['discipline'] == 'Иностранный язык в профессиональной сфере':
-#                     count += 1
-#                 if count == 1:
-#                     row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {'Персон. Ауд.':<15}\n"
-#                     result_text += row
-#                     booling = True
-#                 elif count == 0 or count == 4:
-#                     row = f"{match['date']:<1} {match['dayOfWeekString']:<5} {match['kindOfWork']:<40} {match['discipline']:<55} {match['beginLesson']} - {match['endLesson']:<11} {match['auditorium']:<15}\n"
-#                     result_text += row
-#                 if count == 3:
-#                     count += 1
-#             return result_text
-#     else:
-#         return 'Расписание не найдено.'
-# #
-#
+
+
 def find_classes_for_date_and_disciplines(disciplines, schedule):
     matches = []
 
@@ -188,9 +203,11 @@ def find_classes_for_date_and_disciplines(disciplines, schedule):
     return matches
 #
 #
-def update_disciplines(name1, name2):
+def update_disciplines(name1, name2, direction):
 
-
+    if direction=="PI": PI()
+    if direction=="TCBM": TCBM()
+    if direction=="ITM": ITM()
 
     selected_direction = name1
 
@@ -213,120 +230,3 @@ def update_schedule(group, start_date):
     schedule_data = get_schedule(group_[group], start_date, finish_date)
     matching_classes = find_classes_for_date_and_disciplines(user_disciplines, schedule_data)
     return  matching_classes
-#
-#
-# # Tkinter GUI
-# root = tk.Tk()
-# root.title('Расписание занятий')
-#
-# # Создаем первый выпадающий список направлений
-# label_direction00 = tk.Label(root, text='Выберите группу:')
-# label_direction00.pack()
-#
-# combobox_group = ttk.Combobox(root, values=list(group_.keys()))
-# combobox_group.set(list(group_.keys())[6])  # Устанавливаем значение по умолчанию
-# combobox_group.pack()
-#
-# # Создаем первый выпадающий список направлений
-# label_direction = tk.Label(root, text='Выберите направление:')
-# label_direction.pack()
-#
-# combobox_direction = ttk.Combobox(root, values=directions)
-# combobox_direction.bind('<<ComboboxSelected>>', update_disciplines)
-# combobox_direction.set(directions[0])  # Устанавливаем значение по умолчанию
-# combobox_direction.pack()
-#
-# # Создаем второй выпадающий список специализаций
-# label_specialization = tk.Label(root, text='Выберите направление:')
-# label_specialization.pack()
-#
-# combobox_specialization2 = ttk.Combobox(root, values=directions)
-# combobox_specialization2.bind('<<ComboboxSelected>>', update_disciplines)
-# combobox_specialization2.set(directions[1])  # Устанавливаем значение по умолчанию
-# combobox_specialization2.pack()
-#
-# error_label = tk.Label(root, text='', fg='red')
-# error_label.pack()
-#
-# # Создаем виджет календаря для выбора начальной даты
-# label_start_date = tk.Label(root, text='Дата начала недели (понедельник):')
-# label_start_date.pack()
-#
-# entry_start_date = DateEntry(root, date_pattern='yyyy.mm.dd', year=2024, month=2, day=12)
-# entry_start_date.pack()
-#
-# # Создаем текстовое поле для вывода дисциплин пользователя
-# disciplines_text = scrolledtext.ScrolledText(root, width=40, height=8, wrap=tk.WORD)
-# disciplines_text.insert(tk.INSERT, '\n')
-# disciplines_text.config(state=tk.DISABLED)
-# disciplines_text.pack()
-#
-# # Кнопка для обновления расписания
-# update_button = Button(root, text='Обновить расписание', command=update_schedule)
-# update_button.pack()
-#
-#
-# def convert_to_ical():
-#     cal = Calendar()
-#
-#     cal.add('version', '2.0')
-#     cal.add('prodid', '-//ZContent//ZapCalLib 1.0//EN')
-#     cal.add('calscale', 'GREGORIAN')
-#     cal.add('method', 'PUBLISH')
-#
-#     # Добавляем VTIMEZONE
-#     timezone = Timezone()
-#     timezone.add('tzid', 'Europe/Moscow')
-#     cal.add_component(timezone)
-#     full_schedule = []
-#     booling = False
-#     for i in result_text.get("1.0", tk.END).split("\n")[2:]:
-#         i = i.split("    ")
-#         filtered = list(filter(lambda x: x != "", i))
-#         full_schedule.append(filtered)
-#     full_schedule = full_schedule[:-2]
-#     for schedule in full_schedule:
-#
-#         date_str, event_type, discipline, time_str, auditorium = schedule
-#         date_str = date_str.split(" ")[0]
-#
-#         start_time_str, end_time_str = map(str.strip, time_str.split('-'))
-#
-#         date = datetime.strptime(date_str, "%Y.%m.%d")
-#         start_time = datetime.strptime(start_time_str, "%H:%M")
-#         end_time = datetime.strptime(end_time_str, "%H:%M")
-#         event = Event()
-#
-#         event.add('dtstart', date.replace(hour=start_time.hour, minute=start_time.minute))
-#         event.add('dtend', date.replace(hour=end_time.hour, minute=end_time.minute))
-#         event.add('summary', f"{discipline} ({event_type})")
-#         event.add('location', auditorium)
-#
-#         cal.add_component(event)
-#         booling = True
-#
-#     ical_data = cal.to_ical()
-#     if booling:
-#         current_directory = os.path.dirname(os.path.abspath(__file__))
-#         succ_label.config(text=f'Файл сохранен по пути...где лежит exe')
-#     else:
-#         succ_label.config(text="")
-#     with open(f"my_schedule{start_date}.ics", "wb") as f:
-#         f.write(ical_data)
-#
-#
-# succ_label = tk.Label(root, text='', fg='green')
-# succ_label.pack()
-#
-# # Кнопка для обновления расписания
-# update_button = Button(root, text='Сохранить в Календарь', command=convert_to_ical)
-# update_button.pack()
-#
-# # Создаем текстовое поле для вывода информации
-# result_text = scrolledtext.ScrolledText(root, width=160, height=20, wrap=tk.WORD)
-# result_text.insert(tk.INSERT,
-#                    "Выберите направление, специализацию и дату начала недели, затем нажмите 'Обновить расписание'.")
-# result_text.config(state=tk.DISABLED)
-# result_text.pack()
-#
-# root.mainloop()

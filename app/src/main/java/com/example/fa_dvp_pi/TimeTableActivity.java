@@ -181,7 +181,15 @@ public class TimeTableActivity extends AppCompatActivity {
             String curr_tv_text = tt_tvDate_.getText().toString();
             String sub = curr_tv_text.substring(3);
             String transformedDate = DateTransformer.transformDate(String.format("%s 2024", sub));
-            readJsonDataAndUpdateSchedule(transformedDate);
+
+            try {
+                readJsonDataAndUpdateSchedule(transformedDate);
+            }
+            catch (Exception e) {
+                readJsonDataAndUpdateSchedule(getMondayDate());
+                transformedDate = getMondayDate_curr();
+            }
+
             if (Objects.equals(transformedDate, getMondayDate_curr())) {
                 scroll_to_date();
             }else {
@@ -262,7 +270,8 @@ public class TimeTableActivity extends AppCompatActivity {
         }
         Python py = Python.getInstance();
         PyObject pyObject = py.getModule("mainForFA");
-        PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1[0], savedValueSpinner2[0]);
+        PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1[0],
+                savedValueSpinner2[0], "PI");
         PyObject result = pyObject.callAttr("update_schedule", savedValueSpinner3[0], currentDate);
 
         parseJsonArray(String.valueOf(result));
