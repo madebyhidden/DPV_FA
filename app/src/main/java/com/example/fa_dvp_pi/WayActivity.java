@@ -1,14 +1,17 @@
 package com.example.fa_dvp_pi;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class WayActivity extends AppCompatActivity {
     private Button btn;
@@ -43,22 +46,27 @@ public class WayActivity extends AppCompatActivity {
         final TextView textViewITM = findViewById(R.id.view_itm);
         final TextView textViewTCBM = findViewById(R.id.view_tcbm);
 
+
+        AtomicReference<String> direction = new AtomicReference<>();
         TableViewPI.setOnClickListener(v -> {
             TableViewPI.setBackgroundResource(R.drawable.border_selected);
             TableViewITM.setBackgroundResource(R.drawable.border);
             TableViewTCBM.setBackgroundResource(R.drawable.border);
+            direction.set("PI");
         });
 
         TableViewITM.setOnClickListener(v -> {
             TableViewPI.setBackgroundResource(R.drawable.border);
             TableViewITM.setBackgroundResource(R.drawable.border_selected);
             TableViewTCBM.setBackgroundResource(R.drawable.border);
+            direction.set("ITM");
         });
 
         TableViewTCBM.setOnClickListener(v -> {
             TableViewPI.setBackgroundResource(R.drawable.border);
             TableViewITM.setBackgroundResource(R.drawable.border);
             TableViewTCBM.setBackgroundResource(R.drawable.border_selected);
+            direction.set("TCBM");
         });
 
 
@@ -66,6 +74,13 @@ public class WayActivity extends AppCompatActivity {
         btn.setOnClickListener(view -> {
 
             try {
+
+                try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("direction.txt"))){
+                    bufferedWriter.write(direction.get());
+                } catch (IOException e) {
+                    System.err.println("Ошибка при записи в файл: " + e.getMessage());
+                }
+
                 Intent intent = new Intent(view.getContext(), MainActivity.class);
                 startActivity(intent);
 

@@ -25,8 +25,13 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -36,13 +41,46 @@ public class MainActivity extends AppCompatActivity {
             Python.start(new AndroidPlatform(this));
         }
     }
-
     private Spinner mySpinner1;
     private Spinner mySpinner2;
     private Spinner mySpinner3;
     private Button btnSave__;
     public String monday_finder;
+    private final StringBuilder content = new StringBuilder();
 
+    private List<String> subjectList = new ArrayList<>();
+    List<String> groupList = new ArrayList<>();
+
+
+    {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("direction.txt"))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            System.err.println("Ошибка при чтении файла: " + e.getMessage());
+        }
+
+
+        subjectList.add("Модуль \"ERP-системы\"");
+        subjectList.add("Модуль \"Системное программирование\"");
+        subjectList.add("Модуль \"Управление разработкой\"");
+        subjectList.add("Модуль \"Технологии искусственного интеллекта\"");
+        subjectList.add("Модуль \"Языки и методы программирования\"");
+        subjectList.add("Модуль \"Разработка распределенных приложений\"");
+        subjectList.add("Модуль \"Технологии машинного обучения\"");
+        subjectList.add("Модуль \"Финтех\"");
+
+        groupList.add("ПИ21-1");
+        groupList.add("ПИ21-2");
+        groupList.add("ПИ21-3");
+        groupList.add("ПИ21-4");
+        groupList.add("ПИ21-5");
+        groupList.add("ПИ21-6");
+        groupList.add("ПИ21-7");
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +123,10 @@ public class MainActivity extends AppCompatActivity {
 
         Python py = Python.getInstance();
         PyObject pyObject = py.getModule("mainForFA");
+//        pyObject.callAttr("update_disciplines", selectedValueSpinner1,
+//                selectedValueSpinner2, "PI");
         pyObject.callAttr("update_disciplines", selectedValueSpinner1,
-                selectedValueSpinner2, "PI");
+                selectedValueSpinner2, content);
 
         JSONObject jsonData = new JSONObject();
         try {
@@ -136,19 +176,40 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+//        ArrayAdapter<String> adapter;
+//        adapter = (ArrayAdapter<String>) mySpinner1.getAdapter();
+//        int spinner1Position = adapter.getPosition(savedValueSpinner1);
+//        mySpinner1.setSelection(spinner1Position);
+//
+//        adapter = (ArrayAdapter<String>) mySpinner2.getAdapter();
+//        int spinner2Position = adapter.getPosition(savedValueSpinner2);
+//        mySpinner2.setSelection(spinner2Position);
 
-        // Установка сохраненных значений в спиннеры
-        ArrayAdapter<String> adapter = (ArrayAdapter<String>) mySpinner1.getAdapter();
-        int spinner1Position = adapter.getPosition(savedValueSpinner1);
-        mySpinner1.setSelection(spinner1Position);
+//        adapter = (ArrayAdapter<String>) mySpinner3.getAdapter();
+//        int spinner3Position = adapter.getPosition(savedValueSpinner3);
+//        mySpinner3.setSelection(spinner3Position);
 
-        adapter = (ArrayAdapter<String>) mySpinner2.getAdapter();
-        int spinner2Position = adapter.getPosition(savedValueSpinner2);
-        mySpinner2.setSelection(spinner2Position);
 
-        adapter = (ArrayAdapter<String>) mySpinner3.getAdapter();
-        int spinner3Position = adapter.getPosition(savedValueSpinner3);
-        mySpinner3.setSelection(spinner3Position);
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                subjectList
+        );
+        mySpinner1.setAdapter(adapter1);
+
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                subjectList
+        );
+        mySpinner2.setAdapter(adapter2);
+
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                groupList
+        );
+        mySpinner3.setAdapter(adapter3);
     }
 
 

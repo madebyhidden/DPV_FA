@@ -30,6 +30,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -79,6 +80,20 @@ public class TimeTableActivity extends AppCompatActivity {
         scheduleMap.put("Вс", sundayItems);
     }
 
+    private final StringBuilder content = new StringBuilder();
+
+    {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("direction.txt"))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            System.err.println("Ошибка при чтении файла: " + e.getMessage());
+        }
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +106,7 @@ public class TimeTableActivity extends AppCompatActivity {
     }
 
 
-    private void scroll_to_date(){
+    private void scroll_to_date() {
 
 
         Date currentDate = new Date();
@@ -107,14 +122,28 @@ public class TimeTableActivity extends AppCompatActivity {
         String[] daysOfWeek = new String[]{"Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"};
         String dayOfWeekString = daysOfWeek[dayOfWeek - 1]; // -1, так как нумерация в массиве начинается с 0
 
-        switch (dayOfWeekString){
-            case "Понедельник": targetTextView = findViewById(R.id.timetable_tvMonday); break;
-            case "Вторник": targetTextView = findViewById(R.id.timetable_tvTuesday);break;
-            case "Среда": targetTextView = findViewById(R.id.timetable_tvWednesday);break;
-            case "Четверг": targetTextView = findViewById(R.id.timetable_tvThurday);break;
-            case "Пятница": targetTextView = findViewById(R.id.timetable_tvFriday);break;
-            case "Суббота": targetTextView = findViewById(R.id.timetable_tvSaturday);break;
-            case "Воскресенье": targetTextView = findViewById(R.id.timetable_tvSunday);break;
+        switch (dayOfWeekString) {
+            case "Понедельник":
+                targetTextView = findViewById(R.id.timetable_tvMonday);
+                break;
+            case "Вторник":
+                targetTextView = findViewById(R.id.timetable_tvTuesday);
+                break;
+            case "Среда":
+                targetTextView = findViewById(R.id.timetable_tvWednesday);
+                break;
+            case "Четверг":
+                targetTextView = findViewById(R.id.timetable_tvThurday);
+                break;
+            case "Пятница":
+                targetTextView = findViewById(R.id.timetable_tvFriday);
+                break;
+            case "Суббота":
+                targetTextView = findViewById(R.id.timetable_tvSaturday);
+                break;
+            case "Воскресенье":
+                targetTextView = findViewById(R.id.timetable_tvSunday);
+                break;
 
         }
 
@@ -127,11 +156,10 @@ public class TimeTableActivity extends AppCompatActivity {
                 int[] location = new int[2];
                 targetTextView.getLocationOnScreen(location);
                 int targetY = location[1];
-                scrollView.smoothScrollTo(0, targetY-400);
+                scrollView.smoothScrollTo(0, targetY - 400);
             }
         });
     }
-
 
 
     @Override
@@ -174,7 +202,7 @@ public class TimeTableActivity extends AppCompatActivity {
         };
     }
 
-    private void updatePage(){
+    private void updatePage() {
         tt_tvDate_ = findViewById(R.id.item_date_tvDate);
 
         if (tt_tvDate_ != null) {
@@ -184,15 +212,14 @@ public class TimeTableActivity extends AppCompatActivity {
 
             try {
                 readJsonDataAndUpdateSchedule(transformedDate);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 readJsonDataAndUpdateSchedule(getMondayDate());
                 transformedDate = getMondayDate_curr();
             }
 
             if (Objects.equals(transformedDate, getMondayDate_curr())) {
                 scroll_to_date();
-            }else {
+            } else {
                 scroll_to_monday();
             }
 
@@ -205,8 +232,7 @@ public class TimeTableActivity extends AppCompatActivity {
 
     private void scroll_to_monday() {
 
-         targetTextView = findViewById(R.id.timetable_tvMonday);
-
+        targetTextView = findViewById(R.id.timetable_tvMonday);
 
 
         // Замените R.id.targetTextView на ваш ID TextView
@@ -218,7 +244,7 @@ public class TimeTableActivity extends AppCompatActivity {
                 int[] location = new int[2];
                 targetTextView.getLocationOnScreen(location);
                 int targetY = location[1];
-                scrollView.smoothScrollTo(0, targetY-500);
+                scrollView.smoothScrollTo(0, targetY - 500);
             }
         });
     }
@@ -270,8 +296,11 @@ public class TimeTableActivity extends AppCompatActivity {
         }
         Python py = Python.getInstance();
         PyObject pyObject = py.getModule("mainForFA");
+//        PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1[0],
+//                savedValueSpinner2[0], "PI");
+
         PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1[0],
-                savedValueSpinner2[0], "PI");
+                savedValueSpinner2[0], content);
         PyObject result = pyObject.callAttr("update_schedule", savedValueSpinner3[0], currentDate);
 
         parseJsonArray(String.valueOf(result));
