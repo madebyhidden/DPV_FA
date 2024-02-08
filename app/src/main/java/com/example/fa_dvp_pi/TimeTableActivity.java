@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 import com.example.timetable.DateAdapter;
+import com.example.timetable.DateTransformer;
 import com.example.timetable.TimetableAdapter;
 
 import org.json.JSONArray;
@@ -32,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -48,6 +51,8 @@ public class TimeTableActivity extends AppCompatActivity {
     }
 
     private TextView tt_tvDate_;
+
+    private TextView targetTextView;
 
     TimetableAdapter mondayAdapter, tuesdayAdapter, wednesdayAdapter, thursdayAdapter, fridayAdapter, saturdayAdapter, sundayAdapter;
 
@@ -80,8 +85,51 @@ public class TimeTableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table);
         reset();
+
         initializeViews();
         setupDateRecyclerView();
+    }
+
+
+    private void scroll_to_date(){
+
+
+        Date currentDate = new Date();
+
+        // Создание объекта Calendar и установка текущей даты
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(currentDate);
+
+        // Получение номера дня недели (0 - Воскресенье, 1 - Понедельник, ..., 6 - Суббота)
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+        // Преобразование номера дня недели в строку с названием дня недели
+        String[] daysOfWeek = new String[]{"Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"};
+        String dayOfWeekString = daysOfWeek[dayOfWeek - 1]; // -1, так как нумерация в массиве начинается с 0
+
+        switch (dayOfWeekString){
+            case "Понедельник": targetTextView = findViewById(R.id.timetable_tvMonday); break;
+            case "Вторник": targetTextView = findViewById(R.id.timetable_tvTuesday);break;
+            case "Среда": targetTextView = findViewById(R.id.timetable_tvWednesday);break;
+            case "Четверг": targetTextView = findViewById(R.id.timetable_tvThurday);break;
+            case "Пятница": targetTextView = findViewById(R.id.timetable_tvFriday);break;
+            case "Суббота": targetTextView = findViewById(R.id.timetable_tvSaturday);break;
+            case "Воскресенье": targetTextView = findViewById(R.id.timetable_tvSunday);break;
+
+        }
+
+        // Замените R.id.targetTextView на ваш ID TextView
+        ScrollView scrollView = findViewById(R.id.scroll_view); // Замените R.id.scrollView на ваш ID ScrollView
+
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                int[] location = new int[2];
+                targetTextView.getLocationOnScreen(location);
+                int targetY = location[1];
+                scrollView.smoothScrollTo(0, targetY-400);
+            }
+        });
     }
 
 
@@ -91,6 +139,7 @@ public class TimeTableActivity extends AppCompatActivity {
         super.onStart();
         reset();
         updatePage();
+
 
     }
 
@@ -110,8 +159,10 @@ public class TimeTableActivity extends AppCompatActivity {
     private List<DateAdapter.DateItem> createDateItems() {
         List<DateAdapter.DateItem> dateItems = new ArrayList<>();
         for (int i = 5; i <= 26; i = i + 7) {
-            String dateValue = (i < 10) ? String.format("2024.02.0%s", i) : String.format("2024.02.%s", i);
+            String dateValue = (i < 10) ? String.format("от 0%s февраля", i) : String.format("от %s февраля", i);
             dateItems.add(new DateAdapter.DateItem(dateValue));
+
+
         }
         return dateItems;
     }
@@ -128,7 +179,15 @@ public class TimeTableActivity extends AppCompatActivity {
 
         if (tt_tvDate_ != null) {
             String curr_tv_text = tt_tvDate_.getText().toString();
-            readJsonDataAndUpdateSchedule(curr_tv_text);
+            String sub = curr_tv_text.substring(3);
+            String transformedDate = DateTransformer.transformDate(String.format("%s 2024", sub));
+            readJsonDataAndUpdateSchedule(transformedDate);
+            if (Objects.equals(transformedDate, getMondayDate_curr())) {
+                scroll_to_date();
+            }else {
+                scroll_to_monday();
+            }
+
         } else {
 
             readJsonDataAndUpdateSchedule(getMondayDate());
@@ -136,9 +195,43 @@ public class TimeTableActivity extends AppCompatActivity {
         }
     }
 
+    private void scroll_to_monday() {
+
+         targetTextView = findViewById(R.id.timetable_tvMonday);
+
+
+
+        // Замените R.id.targetTextView на ваш ID TextView
+        ScrollView scrollView = findViewById(R.id.scroll_view); // Замените R.id.scrollView на ваш ID ScrollView
+
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                int[] location = new int[2];
+                targetTextView.getLocationOnScreen(location);
+                int targetY = location[1];
+                scrollView.smoothScrollTo(0, targetY-500);
+            }
+        });
+    }
+
     public static String getMondayDate() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        return String.format(Locale.US, "%04d.%02d.%02d", year, month, dayOfMonth);
+    }
+
+    public static String getMondayDate_curr() {
+        Calendar calendar = Calendar.getInstance();
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        int daysToAdd = 2 - dayOfWeek; // Вычитаем из текущего дня недели количество дней, чтобы вернуться к понедельнику
+        if (daysToAdd > 0) {
+            daysToAdd -= 7; // Если текущий день недели - воскресенье, учитываем, что нужно перейти к предыдущей неделе
+        }
+        calendar.add(Calendar.DAY_OF_MONTH, daysToAdd);
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
         int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
@@ -215,7 +308,6 @@ public class TimeTableActivity extends AppCompatActivity {
                 String beginLesson = jsonObject.optString("beginLesson", "");
                 String endLesson = jsonObject.optString("endLesson", "");
                 String prepod_name = jsonObject.optString("lecturer_title", "");
-                System.out.println(prepod_name);
                 String date = jsonObject.optString("date", "");
 
                 List<TimetableAdapter.TimetableItem> dayItems = scheduleMap.get(dayOfWeekString);

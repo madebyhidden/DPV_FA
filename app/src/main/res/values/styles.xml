@@ -19,7 +19,7 @@
     <style name="DateString">
         <item name="android:fontFamily">@font/date</item>
         <item name="android:textSize">30sp</item>
-        <item name="android:textColor">#C4D4CF</item>
+        <item name="android:textColor">#FFFFFF</item>
     </style>
 
 
