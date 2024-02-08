@@ -49,21 +49,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_first);
 
-        SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-
-        boolean isFirstRun = prefs.getBoolean("isFirstRun", true);
-
-
-        if (isFirstRun) {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("isFirstRun", false);
-            editor.apply();
-        }
-        else {
-            Intent intent = new Intent(this, TimeTableActivity.class);
-            startActivity(intent);
-            finish();
-        }
 
 
         mySpinner1 = (Spinner) findViewById(R.id.spinner1);
@@ -73,20 +58,17 @@ public class MainActivity extends AppCompatActivity {
 
 
         btnSave__ = (Button) findViewById(R.id.btnSave);
-        btnSave__.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveData();
+        btnSave__.setOnClickListener(view -> {
+            saveData();
 
-                try {
-                    Intent intent = new Intent(view.getContext(), TimeTableActivity.class);
-                    startActivity(intent);
+            try {
+                Intent intent = new Intent(view.getContext(), TimeTableActivity.class);
+                startActivity(intent);
 
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
+
         });
 
         monday_finder = getMondayDate();

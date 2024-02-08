@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#002B27"
+    android:orientation="vertical">
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.FA_DVP_PI.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="#000000"
+            app:popupTheme="@style/Theme.FA_DVP_PI.PopupOverlay"
+            app:title="Hello cherty"
+            app:titleTextColor="#FF0000" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        android:text="TextView"
+        tools:text="Выбор направления"
+        tools:textColor="#000000"
+        />
+
+    <TextView
+        android:id="@+id/textViewPI"
+        android:layout_width="315dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/border"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="10dp"
+        android:text="Программная инженерия"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/textViewITM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewPI"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/border"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="10dp"
+        android:text="Информационные технологии и математика"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/textViewTCBM"
+        android:layout_width="315dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewITM"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/border"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="10dp"
+        android:text="Технологии цифрового бизнеса и менеджмента"
+        android:textColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/btn_go_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="В пизду, поехали!" />
+
+</LinearLayout>
