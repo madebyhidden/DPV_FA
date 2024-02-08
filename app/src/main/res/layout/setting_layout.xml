@@ -1,83 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#002B27"
-    android:orientation="vertical">
+    android:orientation="vertical"
 
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.FA_DVP_PI.AppBarOverlay">
+    >
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="#000000"
-            app:popupTheme="@style/Theme.FA_DVP_PI.PopupOverlay"
-            app:title="Hello cherty"
-            app:titleTextColor="#FF0000" />
 
-    </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
         android:id="@+id/textView"
+        style="@style/DateString"
         android:layout_width="match_parent"
-        android:layout_height="85dp"
-        android:text="TextView"
-        tools:text="Выбор направления"
-        tools:textColor="#000000"
-        />
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        android:textSize="24dp"
+        android:text="Выбор направления"
+        android:textColor="#FFFFFF"
+        tools:layout_editor_absoluteX="0dp" />
 
-    <TextView
+
+
+    <TableRow
         android:id="@+id/textViewPI"
-        android:layout_width="315dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_margin="8dp"
         android:background="@drawable/border"
+
         android:clickable="true"
         android:focusable="true"
-        android:padding="10dp"
-        android:text="Программная инженерия"
-        android:textColor="@android:color/white" />
+        android:padding="16dp">
 
-    <TextView
+        <TextView
+            android:id="@+id/view_tcbm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="ТЦБМ - "
+            android:layout_marginLeft="15dp"
+            android:textColor="@android:color/white"
+            android:layout_gravity=""
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:layout_gravity="center_vertical"
+            android:drawablePadding="8dp"
+            android:text="Технологии цифровых бизнес моделей"
+            android:textColor="@android:color/white"
+            android:textSize="15dp"
+             />
+    </TableRow>
+
+    <TableRow
         android:id="@+id/textViewITM"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textViewPI"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_margin="8dp"
         android:background="@drawable/border"
         android:clickable="true"
         android:focusable="true"
-        android:padding="10dp"
-        android:text="Информационные технологии и математика"
-        android:textColor="@android:color/white" />
+        android:padding="16dp">
 
-    <TextView
+        <TextView
+            android:id="@+id/view_pi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="ПИ - "
+            android:layout_marginLeft="30dp"
+            android:layout_gravity="center_vertical"
+
+            android:textColor="@android:color/white"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="308dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="3"
+            android:drawablePadding="8dp"
+            android:text="Прикладная информатика"
+            android:textColor="@android:color/white"
+            android:textSize="15dp"
+             />
+    </TableRow>
+
+    <TableRow
         android:id="@+id/textViewTCBM"
-        android:layout_width="315dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textViewITM"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_margin="8dp"
         android:background="@drawable/border"
         android:clickable="true"
         android:focusable="true"
-        android:padding="10dp"
-        android:text="Технологии цифрового бизнеса и менеджмента"
-        android:textColor="@android:color/white" />
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/view_itm"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="ИТМ - "
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@android:color/white"
+            android:textSize="24dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:drawablePadding="8dp"
+            android:layout_gravity="center_vertical"
+            android:text="ИТ-менеджмент в бизнесе"
+            android:textColor="@android:color/white"
+            android:textSize="15dp"
+             />
+    </TableRow>
 
     <Button
         android:id="@+id/btn_go_next"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="В пизду, поехали!" />
+        android:layout_margin="16dp"
+        android:text="Далее"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableRow3" />
 
-</LinearLayout>
+</TableLayout>

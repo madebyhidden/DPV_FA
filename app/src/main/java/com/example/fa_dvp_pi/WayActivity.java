@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,26 +35,30 @@ public class WayActivity extends AppCompatActivity {
 //        }
 
 
-        final TextView textViewPI = findViewById(R.id.textViewPI);
-        final TextView textViewITM = findViewById(R.id.textViewITM);
-        final TextView textViewTCBM = findViewById(R.id.textViewTCBM);
+        final TableRow TableViewPI = findViewById(R.id.textViewPI);
+        final TableRow TableViewITM = findViewById(R.id.textViewITM);
+        final TableRow TableViewTCBM = findViewById(R.id.textViewTCBM);
 
-        textViewPI.setOnClickListener(v -> {
-            textViewPI.setBackgroundResource(R.drawable.border_selected);
-            textViewITM.setBackgroundResource(R.drawable.border);
-            textViewTCBM.setBackgroundResource(R.drawable.border);
+        final TextView textViewPI = findViewById(R.id.view_pi);
+        final TextView textViewITM = findViewById(R.id.view_itm);
+        final TextView textViewTCBM = findViewById(R.id.view_tcbm);
+
+        TableViewPI.setOnClickListener(v -> {
+            TableViewPI.setBackgroundResource(R.drawable.border_selected);
+            TableViewITM.setBackgroundResource(R.drawable.border);
+            TableViewTCBM.setBackgroundResource(R.drawable.border);
         });
 
-        textViewITM.setOnClickListener(v -> {
-            textViewPI.setBackgroundResource(R.drawable.border);
-            textViewITM.setBackgroundResource(R.drawable.border_selected);
-            textViewTCBM.setBackgroundResource(R.drawable.border);
+        TableViewITM.setOnClickListener(v -> {
+            TableViewPI.setBackgroundResource(R.drawable.border);
+            TableViewITM.setBackgroundResource(R.drawable.border_selected);
+            TableViewTCBM.setBackgroundResource(R.drawable.border);
         });
 
-        textViewTCBM.setOnClickListener(v -> {
-            textViewPI.setBackgroundResource(R.drawable.border);
-            textViewITM.setBackgroundResource(R.drawable.border);
-            textViewTCBM.setBackgroundResource(R.drawable.border_selected);
+        TableViewTCBM.setOnClickListener(v -> {
+            TableViewPI.setBackgroundResource(R.drawable.border);
+            TableViewITM.setBackgroundResource(R.drawable.border);
+            TableViewTCBM.setBackgroundResource(R.drawable.border_selected);
         });
 
 
