@@ -361,19 +361,28 @@ public class TimeTableActivity extends AppCompatActivity {
                 String beginLesson = jsonObject.optString("beginLesson", "");
                 String endLesson = jsonObject.optString("endLesson", "");
                 String prepod_name = jsonObject.optString("lecturer_title", "");
+                String group = jsonObject.optString("group", "");
+                String stream = jsonObject.optString("stream", "");
                 String date = jsonObject.optString("date", "");
 
                 List<TimetableAdapter.TimetableItem> dayItems = scheduleMap.get(dayOfWeekString);
                 if (dayItems != null) {
+
                     if(discipline.equals("Иностранный язык в профессиональной сфере")){
                         if (check) {
-                            dayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, "Персонально", kindOfWork, prepod_name));
+                            dayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, "Персонально", kindOfWork, "", group, stream));
                             check = false;
 
+                        }else {
+                            continue;
                         }
-                        continue;
+
+                    }else {
+                        dayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork, prepod_name, group, stream));
+                        System.out.println();
                     }
-                    dayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork, prepod_name));
+
+
                 }
             }
 
@@ -386,7 +395,7 @@ public class TimeTableActivity extends AppCompatActivity {
         for (String day : weekdays) {
             List<TimetableAdapter.TimetableItem> dayItems = scheduleMap.get(day);
             if (dayItems != null && dayItems.isEmpty()) {
-                dayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "", "", ""));
+                dayItems.add(new TimetableAdapter.TimetableItem("Сегодня выходной", "", "", "", "", "", "", ""));
             }
 
             RecyclerView recyclerView = findRecyclerViewByDay(day);

@@ -97,7 +97,7 @@ def TCBM():
     }
 
     basic_disciplines = ['Иностранный язык в профессиональной сфере', 'Управление данными предприятия',
-                     'Цифровые экосистемы и платформы', 'Технологии искусственного ителекта',
+                     'Цифровые экосистемы и платформы', 'Технологии искусственного интеллекта',
                      'Практикум по цифровым бизнес-моделям']
 
     # Список дисциплин пользователя (по умолчанию базовые дисциплины)
@@ -144,6 +144,7 @@ def get_from_studio(name1, name2):
 #
 def get_schedule(group, start_date, finish_date):
     url = f'https://ruz.fa.ru/api/schedule/group/{group}?start={start_date}&finish={finish_date}&lng=1'
+    print(url)
     schedule_data = requests.get(url).json()
 
     return schedule_data

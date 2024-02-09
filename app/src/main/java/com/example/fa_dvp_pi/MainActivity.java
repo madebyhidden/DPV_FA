@@ -117,10 +117,6 @@ public class MainActivity extends AppCompatActivity {
             subjectList.add("Модуль Управление цифровыми ресурсами компании");
             subjectList.add("Модуль ИТ-менеджмент");
             subjectList.add("Модуль Технологии анализа данных");
-            subjectList.add("Модуль Языки и методы программирования");
-            subjectList.add("Модуль Разработка распределенных приложений");
-            subjectList.add("Модуль Технологии машинного обучения");
-            subjectList.add("Модуль Финтех");
 
             groupList.add("ТЦБМ21-1");
             groupList.add("ТЦБМ21-2");
