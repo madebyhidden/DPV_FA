@@ -146,7 +146,10 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.Time
                     holder.tvGroup.setText("Подгруппа: 4");
                 } else if (item.getSubject().startsWith("Иностранный язык")) {
                     holder.tvGroup.setText("Персонально");
+                } else if (item.getGroup().split(";").length >= 5) {
+                    holder.tvGroup.setText("Всё направление");
                 } else {
+                    System.out.println(item.getGroup());
                     holder.tvGroup.setText(String.format("Группа: %s", item.getGroup()));
                 }
 

@@ -12,6 +12,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -161,7 +162,7 @@ public class TimeTableActivity extends AppCompatActivity {
         }
 
         // Замените R.id.targetTextView на ваш ID TextView
-        ScrollView scrollView = findViewById(R.id.scroll_view); // Замените R.id.scrollView на ваш ID ScrollView
+        NestedScrollView scrollView = findViewById(R.id.scroll_view); // Замените R.id.scrollView на ваш ID ScrollView
 
         scrollView.post(new Runnable() {
             @Override
@@ -249,7 +250,7 @@ public class TimeTableActivity extends AppCompatActivity {
 
 
         // Замените R.id.targetTextView на ваш ID TextView
-        ScrollView scrollView = findViewById(R.id.scroll_view); // Замените R.id.scrollView на ваш ID ScrollView
+        NestedScrollView scrollView = findViewById(R.id.scroll_view); // Замените R.id.scrollView на ваш ID ScrollView
 
         scrollView.post(new Runnable() {
             @Override
