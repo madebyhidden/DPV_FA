@@ -46,6 +46,8 @@ import java.util.Objects;
 
 public class TimeTableActivity extends AppCompatActivity {
 
+
+
     {
         if (!Python.isStarted()) {
             Python.start(new AndroidPlatform(this));
@@ -55,6 +57,8 @@ public class TimeTableActivity extends AppCompatActivity {
     private TextView tt_tvDate_;
 
     private TextView targetTextView;
+
+    public boolean error = false;
 
     TimetableAdapter mondayAdapter, tuesdayAdapter, wednesdayAdapter, thursdayAdapter, fridayAdapter, saturdayAdapter, sundayAdapter;
 
@@ -312,14 +316,23 @@ public class TimeTableActivity extends AppCompatActivity {
         PyObject pyObject = py.getModule("mainForFA");
 //        PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1[0],
 //                savedValueSpinner2[0], "PI");
-
-        PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1[0],
-                savedValueSpinner2[0], content);
+        try {
+            PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1[0],
+                    savedValueSpinner2[0], content);
+        }catch (Exception e){
+            return;
+        }
 
         System.out.println(content);
         PyObject result = pyObject.callAttr("update_schedule", savedValueSpinner3[0], currentDate);
-
-        parseJsonArray(String.valueOf(result));
+        if (String.valueOf(result).equals("NoMatch")){
+            error = true;
+            Intent intent = new Intent(this, WayActivity.class);
+            startActivity(intent);
+        }else {
+            parseJsonArray(String.valueOf(result));
+        System.out.println("f " +error);
+        }
     }
 
     private void initializeViews() {

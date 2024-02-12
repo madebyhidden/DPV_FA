@@ -191,7 +191,8 @@ def update_disciplines(name1, name2, direction):
 
 #
 def update_schedule(group, start_date):
-
+    if group == "Выбрать":
+        return "NoMatch"
     print(group_, " 0 ", specializations, " 0 ", basic_disciplines)
     finish_date = calculate_end_date(start_date)
     schedule_data = get_schedule(group_[group], start_date, finish_date)

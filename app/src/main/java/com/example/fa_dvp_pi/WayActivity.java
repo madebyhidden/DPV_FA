@@ -18,6 +18,7 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Time;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -32,8 +33,14 @@ public class WayActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
 
         boolean isFirstRun = prefs.getBoolean("isFirstRun", true);
+        TimeTableActivity timeta = new TimeTableActivity();
 
-
+        System.out.println(timeta.error);
+        if (!timeta.error){
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("isFirstRun", true);
+            editor.apply();
+        }
         if (isFirstRun) {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean("isFirstRun", false);
