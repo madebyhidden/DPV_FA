@@ -1,5 +1,6 @@
 package com.example.fa_dvp_pi;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,6 +42,7 @@ public class WayActivity extends AppCompatActivity {
         }
         else {
             Intent intent = new Intent(this, TimeTableActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_MUTABLE);
             startActivity(intent);
             finish();
         }

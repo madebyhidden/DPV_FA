@@ -1,17 +1,23 @@
 package com.example.fa_dvp_pi;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.icu.util.Calendar;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
@@ -24,16 +30,28 @@ import com.chaquo.python.android.AndroidPlatform;
 import com.example.timetable.DateAdapter;
 import com.example.timetable.DateTransformer;
 import com.example.timetable.TimetableAdapter;
+import com.github.javiersantos.appupdater.AppUpdater;
+import com.github.javiersantos.appupdater.AppUpdaterUtils;
+import com.github.javiersantos.appupdater.UpdateClickListener;
+import com.github.javiersantos.appupdater.enums.AppUpdaterError;
+import com.github.javiersantos.appupdater.enums.Display;
+import com.github.javiersantos.appupdater.enums.UpdateFrom;
+import com.github.javiersantos.appupdater.objects.Update;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -42,6 +60,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 public class TimeTableActivity extends AppCompatActivity {
@@ -111,6 +135,7 @@ public class TimeTableActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table);
         reset();
@@ -170,10 +195,11 @@ public class TimeTableActivity extends AppCompatActivity {
                 int[] location = new int[2];
                 targetTextView.getLocationOnScreen(location);
                 int targetY = location[1];
-                scrollView.smoothScrollTo(0, targetY - 400);
+                scrollView.smoothScrollTo(0, targetY - 450);
             }
         });
     }
+
 
 
     @Override
@@ -181,6 +207,17 @@ public class TimeTableActivity extends AppCompatActivity {
         super.onStart();
         reset();
         updatePage();
+        AppUpdater appUpdater = new AppUpdater(this)
+            .setDisplay(Display.SNACKBAR)
+            .setUpdateFrom(UpdateFrom.GITHUB)
+            .setGitHubUserAndRepo("madebyhidden", "DPV_FA").showAppUpdated(true).setButtonUpdate(null);
+
+        appUpdater.start();
+
+        View decorView = getWindow().getDecorView();
+
+        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        decorView.setSystemUiVisibility(uiOptions);
 
 
     }
@@ -191,10 +228,11 @@ public class TimeTableActivity extends AppCompatActivity {
 // Создаем адаптер и заполняем его данными
 
         RecyclerView rvDate = findViewById(R.id.timetable_rvDate);
-        SnapHelper snapHelper = new LinearSnapHelper();
-        snapHelper.attachToRecyclerView(rvDate);
         List<DateAdapter.DateItem> dateItems = createDateItems();
         DateAdapter dateAdapter = new DateAdapter(dateItems, createDateSelectedListener());
+        rvDate.setLayoutManager(new LinearLayoutManager(this,
+                LinearLayoutManager.HORIZONTAL, false));
+
         rvDate.setAdapter(dateAdapter);
     }
 
@@ -438,6 +476,7 @@ public class TimeTableActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        final PackageInfo[] packageInfo = {null};
         if (item.getItemId() == R.id.action_settings) {
             SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
 
@@ -445,8 +484,47 @@ public class TimeTableActivity extends AppCompatActivity {
             editor.putBoolean("isFirstRun", true);
             editor.apply();
             Intent intent = new Intent(this, MainActivity.class);
+
             startActivity(intent);
             return true;
+        }
+        if (item.getItemId() == R.id.action_update) {
+            AppUpdaterUtils appUpdaterUtils = new AppUpdaterUtils(this)
+                    .setUpdateFrom(UpdateFrom.GITHUB)
+                    .setGitHubUserAndRepo("madebyhidden", "DPV_FA")
+                    .withListener(new AppUpdaterUtils.UpdateListener() {
+                        @Override
+                        public void onSuccess(Update update, Boolean isUpdateAvailable) {
+                            PackageManager packageManager = getPackageManager();
+                            try {
+                                packageInfo[0] = packageManager.getPackageInfo(getPackageName(), 0);
+                            } catch (PackageManager.NameNotFoundException e) {
+                                throw new RuntimeException(e);
+                            }
+                            String v = packageInfo[0].versionName;
+                            System.out.println(v+ " " + update.getLatestVersion());
+                            if (v.equals(update.getLatestVersion())){
+                                return;
+                            } else {
+                                // Получаем ссылку на Telegram
+                                String telegramUrl = "https://t.me/fa_dpv"; // Замените на свою ссылку
+                                // Создаем намерение для открытия ссылки
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                // Устанавливаем данные для намерения
+                                intent.setData(Uri.parse(telegramUrl));
+                                // Запускаем намерение
+                                startActivity(intent);
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailed(AppUpdaterError error) {
+                            // Обрабатываем ошибку проверки обновления
+                        }
+                    });
+
+            appUpdaterUtils.start();
         }
         return super.onOptionsItemSelected(item);
     }

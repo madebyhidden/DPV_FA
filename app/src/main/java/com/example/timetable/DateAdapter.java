@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import com.example.fa_dvp_pi.R;
 
@@ -35,6 +37,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
 
 
     }
+    private  SnapHelper snapHelper;
 
     // Создал список для хранения данных обо всех элементах
     private List<DateItem> dateItems;
@@ -56,6 +59,15 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
         this.onDateSelectedListener = onDateSelectedListener;
     }
 
+    // Перенесите код создания и присоединения SnapHelper из вашего активити в метод onAttachedToRecyclerView вашего адаптера
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        // Создайте SnapHelper объект и присоедините его к вашему RecyclerView
+        snapHelper = new LinearSnapHelper();
+        snapHelper.attachToRecyclerView (recyclerView);
+    }
+
     // Создал класс для хранения ссылок на элементы разметки
     public static class DateViewHolder extends RecyclerView.ViewHolder {
         private TextView tvDate; // TextView для даты
@@ -69,8 +81,6 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
 
         }
     }
-
-    // Переопределил метод для создания элемента
     @NonNull
     @Override
     public DateViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
