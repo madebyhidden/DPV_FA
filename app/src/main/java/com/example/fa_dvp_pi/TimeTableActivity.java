@@ -99,6 +99,11 @@ public class TimeTableActivity extends AppCompatActivity {
 
     private String content;
 
+    AppUpdater appUpdater = new AppUpdater(this)
+            .setDisplay(Display.SNACKBAR)
+            .setUpdateFrom(UpdateFrom.GITHUB)
+            .setGitHubUserAndRepo("madebyhidden", "DPV_FA").showAppUpdated(true).setButtonUpdate(null);
+
     private void make_spisok_intime() {
         String fileName = "dir.json";
         try (FileInputStream fis = openFileInput(fileName)) {
@@ -134,10 +139,7 @@ public class TimeTableActivity extends AppCompatActivity {
         make_spisok_intime();
         initializeViews();
         setupDateRecyclerView();
-        AppUpdater appUpdater = new AppUpdater(this)
-                .setDisplay(Display.SNACKBAR)
-                .setUpdateFrom(UpdateFrom.GITHUB)
-                .setGitHubUserAndRepo("madebyhidden", "DPV_FA").showAppUpdated(true).setButtonUpdate(null);
+
 
         appUpdater.start();
     }
@@ -564,11 +566,12 @@ public class TimeTableActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailed(AppUpdaterError error) {
-                            // Обрабатываем ошибку проверки обновления
                         }
                     });
 
             appUpdaterUtils.start();
+        }else {
+            appUpdater.start();
         }
         return super.onOptionsItemSelected(item);
     }
