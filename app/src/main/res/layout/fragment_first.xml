@@ -44,6 +44,17 @@
         app:layout_constraintVertical_bias="0.742"
         tools:layout_editor_absoluteX="16dp" />
 
+    <Spinner
+        android:id="@+id/spinner4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:entries="@array/your_spinner2_entries"
+        app:layout_constraintBottom_toTopOf="@+id/btnSave"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="16dp" />
+
     <Button
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"

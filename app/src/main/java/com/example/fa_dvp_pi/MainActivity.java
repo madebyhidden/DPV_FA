@@ -45,12 +45,13 @@ public class MainActivity extends AppCompatActivity {
     private Spinner mySpinner1;
     private Spinner mySpinner2;
     private Spinner mySpinner3;
+    private Spinner mySpinner4;
     private Button btnSave__;
     public String monday_finder;
 
     private List<String> subjectList = new ArrayList<>();
     List<String> groupList = new ArrayList<>();
-
+    List<String> secondLangTeacher = new ArrayList<>();
 
     private String content;
 
@@ -97,6 +98,13 @@ public class MainActivity extends AppCompatActivity {
             groupList.add("ПИ21-5");
             groupList.add("ПИ21-6");
             groupList.add("ПИ21-7");
+
+            secondLangTeacher.add("Романова В.В.");
+            secondLangTeacher.add("Краснова Т.И.");
+            secondLangTeacher.add("Восковская А.С.");
+            secondLangTeacher.add("Бугреева А.С.");
+            secondLangTeacher.add("Карпова Т.А.");
+            secondLangTeacher.add("Халевина С.Н.");
         }
 
         if(content.equals("ITM")) {
@@ -111,6 +119,13 @@ public class MainActivity extends AppCompatActivity {
             groupList.add("ИТМ21-3");
             groupList.add("ИТМ21-4");
             groupList.add("ИТМ21-5");
+
+            secondLangTeacher.add("Бугреева А.С.");
+            secondLangTeacher.add("Карпова Т.А.");
+            secondLangTeacher.add("Медведева Ю.И.");
+            secondLangTeacher.add("Борисова И.В.");
+            secondLangTeacher.add("Чалова О.А.");
+            secondLangTeacher.add("Малюгина Н.М.");
         }
 
         if(content.equals("TCBM")) {
@@ -124,6 +139,12 @@ public class MainActivity extends AppCompatActivity {
             groupList.add("ТЦБМ21-3");
             groupList.add("ТЦБМ21-4");
             groupList.add("ТЦБМ21-5");
+
+            secondLangTeacher.add("Доценко Н.С.");
+            secondLangTeacher.add("Карпова Т.А.");
+            secondLangTeacher.add("Краснова Т.И.");
+            secondLangTeacher.add("Медведева Ю.И.");
+            secondLangTeacher.add("Бугреева А.С.");
         }
 
         System.out.println(content);
@@ -142,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
         mySpinner2 = (Spinner) findViewById(R.id.spinner2);
         mySpinner3 = (Spinner) findViewById(R.id.spinner_pi);
+        mySpinner4 = (Spinner) findViewById(R.id.spinner4);
 
 
         btnSave__ = (Button) findViewById(R.id.btnSave);
@@ -170,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
         String selectedValueSpinner1 = mySpinner1.getSelectedItem().toString();
         String selectedValueSpinner2 = mySpinner2.getSelectedItem().toString();
         String selectedValueSpinner3 = mySpinner3.getSelectedItem().toString();
+        String selectedValueSpinner4 = mySpinner4.getSelectedItem().toString();
 
         Python py = Python.getInstance();
         PyObject pyObject = py.getModule("mainForFA");
@@ -183,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
             jsonData.put("spinner1", selectedValueSpinner1);
             jsonData.put("spinner2", selectedValueSpinner2);
             jsonData.put("spinner3", selectedValueSpinner3);
+            jsonData.put("spinner4", selectedValueSpinner4);
         } catch (JSONException e) {
             e.printStackTrace();
             Log.d("JSONException", Objects.requireNonNull(e.getMessage()));
@@ -202,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
         String savedValueSpinner1 = "Выбрать";
         String savedValueSpinner2 = "Выбрать";
         String savedValueSpinner3 = "Выбрать";
+        String savedValueSpinner4 = "Выбрать";
 
         String fileName = "data.json";
         try (FileInputStream fis = openFileInput(fileName)) {
@@ -220,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
             savedValueSpinner1 = jsonData.getString("spinner1");
             savedValueSpinner2 = jsonData.getString("spinner2");
             savedValueSpinner3 = jsonData.getString("spinner3");
+            savedValueSpinner4 = jsonData.getString("spinner4");
 
             // Используйте значения в вашем коде
         } catch (IOException | JSONException e) {
@@ -260,6 +286,13 @@ public class MainActivity extends AppCompatActivity {
                 groupList
         );
         mySpinner3.setAdapter(adapter3);
+
+        ArrayAdapter<String> adapter4 = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                secondLangTeacher
+        );
+        mySpinner4.setAdapter(adapter4);
     }
 
 

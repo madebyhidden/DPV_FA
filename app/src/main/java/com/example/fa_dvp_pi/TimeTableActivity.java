@@ -1,6 +1,5 @@
 package com.example.fa_dvp_pi;
 
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -9,20 +8,15 @@ import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
@@ -32,7 +26,6 @@ import com.example.timetable.DateTransformer;
 import com.example.timetable.TimetableAdapter;
 import com.github.javiersantos.appupdater.AppUpdater;
 import com.github.javiersantos.appupdater.AppUpdaterUtils;
-import com.github.javiersantos.appupdater.UpdateClickListener;
 import com.github.javiersantos.appupdater.enums.AppUpdaterError;
 import com.github.javiersantos.appupdater.enums.Display;
 import com.github.javiersantos.appupdater.enums.UpdateFrom;
@@ -43,15 +36,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -60,12 +47,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 
 public class TimeTableActivity extends AppCompatActivity {
@@ -106,8 +87,8 @@ public class TimeTableActivity extends AppCompatActivity {
     }
 
     private String content;
-    private void make_spisok_intime()
-    {
+
+    private void make_spisok_intime() {
         String fileName = "dir.json";
         try (FileInputStream fis = openFileInput(fileName)) {
             InputStreamReader isr = new InputStreamReader(fis);
@@ -201,16 +182,15 @@ public class TimeTableActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onStart() {
         super.onStart();
         reset();
         updatePage();
         AppUpdater appUpdater = new AppUpdater(this)
-            .setDisplay(Display.SNACKBAR)
-            .setUpdateFrom(UpdateFrom.GITHUB)
-            .setGitHubUserAndRepo("madebyhidden", "DPV_FA").showAppUpdated(true).setButtonUpdate(null);
+                .setDisplay(Display.SNACKBAR)
+                .setUpdateFrom(UpdateFrom.GITHUB)
+                .setGitHubUserAndRepo("madebyhidden", "DPV_FA").showAppUpdated(true).setButtonUpdate(null);
 
         appUpdater.start();
 
@@ -329,6 +309,7 @@ public class TimeTableActivity extends AppCompatActivity {
         String[] savedValueSpinner1 = {"Выбрать"};
         String[] savedValueSpinner2 = {"Выбрать"};
         String[] savedValueSpinner3 = {"Выбрать"};
+        String[] savedValueSpinner4 = {"Выбрать"};
         String fileName = "data.json";
         try (FileInputStream fis = openFileInput(fileName)) {
             InputStreamReader isr = new InputStreamReader(fis);
@@ -342,6 +323,7 @@ public class TimeTableActivity extends AppCompatActivity {
             savedValueSpinner1[0] = jsonData.getString("spinner1");
             savedValueSpinner2[0] = jsonData.getString("spinner2");
             savedValueSpinner3[0] = jsonData.getString("spinner3");
+            savedValueSpinner4[0] = jsonData.getString("spinner4");
         } catch (IOException | JSONException e) {
             e.printStackTrace();
             Log.d("Error IOException | JSONException", Objects.requireNonNull(e.getMessage()));
@@ -357,7 +339,7 @@ public class TimeTableActivity extends AppCompatActivity {
         System.out.println(content);
         PyObject result = pyObject.callAttr("update_schedule", savedValueSpinner3[0], currentDate);
 
-        parseJsonArray(String.valueOf(result));
+        parseJsonArray(String.valueOf(result), savedValueSpinner4[0]);
     }
 
     private void initializeViews() {
@@ -381,7 +363,7 @@ public class TimeTableActivity extends AppCompatActivity {
 
     }
 
-    public void parseJsonArray(String jsonArrayString) {
+    public void parseJsonArray(String jsonArrayString, String langTeacher) {
         boolean check = true;
         try {
             // Создаем JSONArray из строки
@@ -406,17 +388,23 @@ public class TimeTableActivity extends AppCompatActivity {
 
                 List<TimetableAdapter.TimetableItem> dayItems = scheduleMap.get(dayOfWeekString);
                 if (dayItems != null) {
-
-                    if(discipline.equals("Иностранный язык в профессиональной сфере")){
+                    boolean c = Objects.equals(prepod_name.split(" ")[0].toLowerCase(), langTeacher.split(" ")[0].toLowerCase());
+                    System.out.println("c =" + c);
+                    if (discipline.equals("Иностранный язык в профессиональной сфере") && c) {
                         if (check) {
-                            dayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, "Персонально", kindOfWork, "", group, stream));
+                            dayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork, langTeacher, group, stream));
                             check = false;
 
-                        }else {
+                        } else {
                             continue;
                         }
 
-                    }else {
+                    }
+                    else if (discipline.equals("Иностранный язык в профессиональной сфере")){
+                        continue;
+                    }
+
+                    else if (!c) {
                         dayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork, prepod_name, group, stream));
                         System.out.println();
                     }
@@ -502,8 +490,8 @@ public class TimeTableActivity extends AppCompatActivity {
                                 throw new RuntimeException(e);
                             }
                             String v = packageInfo[0].versionName;
-                            System.out.println(v+ " " + update.getLatestVersion());
-                            if (v.equals(update.getLatestVersion())){
+                            System.out.println(v + " " + update.getLatestVersion());
+                            if (v.equals(update.getLatestVersion())) {
                                 return;
                             } else {
                                 // Получаем ссылку на Telegram
