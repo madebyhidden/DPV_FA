@@ -18,14 +18,7 @@
         app:cardBackgroundColor="#315554"
         app:cardCornerRadius="6dp">
 
-        <TextView
-            android:id="@+id/item_timetable_tvGroup"
-            android:layout_width="137dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|center_horizontal"
-            android:layout_marginTop="2dp"
-            android:textColor="#6E9177"
-            android:textSize="15sp" />
+
 
     </androidx.cardview.widget.CardView>
 
@@ -80,7 +73,7 @@
             style="@style/DateString"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <!-- Добавил TextView для начала и конца времени -->
@@ -91,8 +84,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#B7DFD9"
-            android:textSize="11sp"
+            android:textSize="14sp"
             tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/item_timetable_tvGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="2dp"
+            android:textColor="#6E9177"
+            android:textSize="12sp" />
 
         <!-- Добавил TextView для аудитории -->
         <TextView

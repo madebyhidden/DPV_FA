@@ -155,6 +155,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_first);
+
+
+        SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+
+        boolean isFirstRun = prefs.contains("isFirstRun");
+
+        if (isFirstRun) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("isFirstRun", false);
+            editor.apply();
+        }
+        else {
+            Intent intent = new Intent(this, TimeTableActivity.class);
+            startActivity(intent);
+            finish();
+        }
         make_spisoks();
         System.out.println(String.valueOf(content));
 

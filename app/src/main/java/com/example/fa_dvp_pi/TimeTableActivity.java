@@ -462,7 +462,7 @@ public class TimeTableActivity extends AppCompatActivity {
                         continue;
                     } else if (!c) {
                         dayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork, prepod_name, group, stream));
-                        System.out.println();
+
                     }
 
 
@@ -546,7 +546,6 @@ public class TimeTableActivity extends AppCompatActivity {
                                 throw new RuntimeException(e);
                             }
                             String v = packageInfo[0].versionName;
-                            System.out.println(v + " " + update.getLatestVersion());
                             if (v.equals(update.getLatestVersion())) {
                                 return;
                             } else {

@@ -172,7 +172,7 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.Time
                 } else if (item.getGroup().split(";").length >= 5) {
                     holder.tvGroup.setText("Всё направление");
                 } else {
-                    System.out.println(item.getGroup());
+
                     holder.tvGroup.setText(String.format("Группа: %s", item.getGroup()));
                 }
 
