@@ -142,6 +142,12 @@ public class TimeTableActivity extends AppCompatActivity {
         make_spisok_intime();
         initializeViews();
         setupDateRecyclerView();
+        AppUpdater appUpdater = new AppUpdater(this)
+                .setDisplay(Display.SNACKBAR)
+                .setUpdateFrom(UpdateFrom.GITHUB)
+                .setGitHubUserAndRepo("madebyhidden", "DPV_FA").showAppUpdated(true).setButtonUpdate(null);
+
+        appUpdater.start();
     }
 
 
@@ -207,12 +213,7 @@ public class TimeTableActivity extends AppCompatActivity {
         super.onStart();
         reset();
         updatePage();
-        AppUpdater appUpdater = new AppUpdater(this)
-            .setDisplay(Display.SNACKBAR)
-            .setUpdateFrom(UpdateFrom.GITHUB)
-            .setGitHubUserAndRepo("madebyhidden", "DPV_FA").showAppUpdated(true).setButtonUpdate(null);
 
-        appUpdater.start();
 
         View decorView = getWindow().getDecorView();
 
@@ -238,9 +239,15 @@ public class TimeTableActivity extends AppCompatActivity {
 
     private List<DateAdapter.DateItem> createDateItems() {
         List<DateAdapter.DateItem> dateItems = new ArrayList<>();
-        for (int i = 5; i <= 26; i = i + 7) {
-            String dateValue = (i < 10) ? String.format("от 0%s февраля", i) : String.format("от %s февраля", i);
-            dateItems.add(new DateAdapter.DateItem(dateValue));
+        for (int i = 12; i <= 33; i = i + 7) {
+            if(i==33){
+                String dateValue =  "от 04 марта";
+                dateItems.add(new DateAdapter.DateItem(dateValue));
+            }else {
+                String dateValue = (i < 10) ? String.format("от 0%s февраля", i) : String.format("от %s февраля", i);
+                dateItems.add(new DateAdapter.DateItem(dateValue));
+
+            }
 
 
         }
