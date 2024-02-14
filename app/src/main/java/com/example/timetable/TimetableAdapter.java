@@ -18,6 +18,8 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.Time
     // Создал класс для хранения данных об одном элементе
     public static class TimetableItem {
 
+        private String date;
+
         private String stream;
         private String group;
         private String prepod_name;
@@ -37,6 +39,7 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.Time
             this.prepod_name = prepod_name;
             this.group = group;
             this.stream = stream;
+
         }
 
         // Создал геттеры для получения значений полей
@@ -71,6 +74,8 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.Time
         public String getStream() {
             return stream;
         }
+
+        private String getDate() { return date;}
     }
 
     // Создал список для хранения данных обо всех элементах
@@ -92,6 +97,14 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.Time
 
         private TextView tvGroup;
 
+        private TextView tvMon;
+        private TextView tvTue;
+        private TextView tvWed;
+        private TextView tvThr;
+        private TextView tvFri;
+        private TextView tvSat;
+        private TextView tvSun;
+
         // Создал конструктор для инициализации ссылок
         public TimetableViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -101,6 +114,14 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.Time
             tvType = itemView.findViewById(R.id.item_timetable_tvType);
             tvPrepod = itemView.findViewById(R.id.item_timetable_tvPrepod);
             tvGroup = itemView.findViewById(R.id.item_timetable_tvGroup);
+
+            tvMon = itemView.findViewById(R.id.timetable_tvMonday);
+            tvTue = itemView.findViewById(R.id.timetable_tvTuesday);
+            tvWed = itemView.findViewById(R.id.timetable_tvWednesday);
+            tvThr = itemView.findViewById(R.id.timetable_tvThurday);
+            tvFri = itemView.findViewById(R.id.timetable_tvFriday);
+            tvSat = itemView.findViewById(R.id.timetable_tvSaturday);
+            tvSun = itemView.findViewById(R.id.timetable_tvSunday);
         }
     }
 
@@ -118,8 +139,10 @@ public class TimetableAdapter extends RecyclerView.Adapter<TimetableAdapter.Time
     @Override
     public void onBindViewHolder(@NonNull TimetableViewHolder holder, int position) {
 
-        // Получил данные об одном элементе из списка по позиции
         TimetableItem item = timetableItems.get(position);
+
+        // Получил данные об одном элементе из списка по позиции
+
         // Установил текст для каждого TextView из данных
         if (item.getSubject().equals("Сегодня выходной")) {
             holder.tvSubject.setText(item.getSubject());

@@ -89,6 +89,14 @@ public class TimeTableActivity extends AppCompatActivity {
         scheduleMap.put("Вс", sundayItems);
     }
 
+    private TextView tvMon;
+    private TextView tvTue;
+    private TextView tvWed;
+    private TextView tvThr;
+    private TextView tvFri;
+    private TextView tvSat;
+    private TextView tvSun;
+
     private String content;
 
     private void make_spisok_intime() {
@@ -196,12 +204,6 @@ public class TimeTableActivity extends AppCompatActivity {
         super.onStart();
         reset();
         updatePage();
-        AppUpdater appUpdater = new AppUpdater(this)
-                .setDisplay(Display.SNACKBAR)
-                .setUpdateFrom(UpdateFrom.GITHUB)
-                .setGitHubUserAndRepo("madebyhidden", "DPV_FA").showAppUpdated(true).setButtonUpdate(null);
-
-        appUpdater.start();
 
         View decorView = getWindow().getDecorView();
 
@@ -344,17 +346,12 @@ public class TimeTableActivity extends AppCompatActivity {
         PyObject pyObject = py.getModule("mainForFA");
 //        PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1[0],
 //                savedValueSpinner2[0], "PI");
-        try {
-            PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1[0],
-                    savedValueSpinner2[0], content);
-        } catch (Exception e) {
-            return;
-        }
 
-        System.out.println(content);
+        PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1[0],
+                savedValueSpinner2[0], content);
+
         PyObject result = pyObject.callAttr("update_schedule", savedValueSpinner3[0], currentDate);
 
-        parseJsonArray(String.valueOf(result), savedValueSpinner4[0]);
         if (String.valueOf(result).equals("NoMatch")) {
             error = true;
             Intent intent = new Intent(this, WayActivity.class);
@@ -388,7 +385,18 @@ public class TimeTableActivity extends AppCompatActivity {
     }
 
     public void parseJsonArray(String jsonArrayString, String langTeacher) {
+
+
+        tvMon = findViewById(R.id.timetable_tvMonday);
+        tvTue = findViewById(R.id.timetable_tvTuesday);
+        tvWed = findViewById(R.id.timetable_tvWednesday);
+        tvThr = findViewById(R.id.timetable_tvThurday);
+        tvFri = findViewById(R.id.timetable_tvFriday);
+        tvSat = findViewById(R.id.timetable_tvSaturday);
+        tvSun = findViewById(R.id.timetable_tvSunday);
+        int count = 0;
         boolean check = true;
+        boolean date_check = false;
         try {
             // Создаем JSONArray из строки
             JSONArray jsonArray = new JSONArray(jsonArrayString);
@@ -408,12 +416,39 @@ public class TimeTableActivity extends AppCompatActivity {
                 String prepod_name = jsonObject.optString("lecturer_title", "");
                 String group = jsonObject.optString("group", "");
                 String stream = jsonObject.optString("stream", "");
-                String date = jsonObject.optString("date", "");
+
+
+                if(!date_check){
+                    String date = jsonObject.optString("date", "");
+                    date = (String) date.subSequence(8, 10);
+                    System.out.println(date);
+                    if (Integer.parseInt(date) <= 26){
+
+                        tvMon.setText(String.format("Понедельник, %s", Integer.parseInt(date)));
+                        tvTue.setText(String.format( "Вторник, %s", Integer.parseInt(date) + 1));
+                        tvWed.setText(String.format( "Среда, %s", Integer.parseInt(date) + 2));
+                        tvThr.setText(String.format( "Четверг, %s", Integer.parseInt(date) + 3));
+                        tvFri.setText(String.format( "Пятница, %s", Integer.parseInt(date) + 4));
+                        tvSat.setText(String.format( "Суббота, %s", Integer.parseInt(date) + 5));
+                        tvSun.setText(String.format( "Воскресенье, %s", Integer.parseInt(date) + 6));
+                        if(Integer.parseInt(date) == 26){
+                            tvFri.setText(String.format( "Пятница, %s", 1));
+                            tvSat.setText(String.format( "Суббота, %s", 2));
+                            tvSun.setText(String.format( "Воскресенье, %s", 3));
+                        }
+
+                    }
+                    date_check = true;
+                }
+
+
+
+
 
                 List<TimetableAdapter.TimetableItem> dayItems = scheduleMap.get(dayOfWeekString);
                 if (dayItems != null) {
                     boolean c = Objects.equals(prepod_name.split(" ")[0].toLowerCase(), langTeacher.split(" ")[0].toLowerCase());
-                    System.out.println("c =" + c);
+
                     if (discipline.equals("Иностранный язык в профессиональной сфере") && c) {
                         if (check) {
                             dayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork, langTeacher, group, stream));
