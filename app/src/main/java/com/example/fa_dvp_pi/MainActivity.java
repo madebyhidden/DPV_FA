@@ -99,12 +99,12 @@ public class MainActivity extends AppCompatActivity {
             groupList.add("ПИ21-6");
             groupList.add("ПИ21-7");
 
-            secondLangTeacher.add("Романова В.В.");
-            secondLangTeacher.add("Краснова Т.И.");
-            secondLangTeacher.add("Восковская А.С.");
-            secondLangTeacher.add("Бугреева А.С.");
-            secondLangTeacher.add("Карпова Т.А.");
-            secondLangTeacher.add("Халевина С.Н.");
+            secondLangTeacher.add("Романова Валерия Владимировна");
+            secondLangTeacher.add("Краснова Татьяна Ивановна");
+            secondLangTeacher.add("Восковская Анжела Сергеевна");
+            secondLangTeacher.add("Бугреева Анастасия Сергеевна");
+            secondLangTeacher.add("Карпова Татьяна Анатольевна");
+            secondLangTeacher.add("Халевина Светлана Николаевна");
         }
 
         if(content.equals("ITM")) {
@@ -120,12 +120,12 @@ public class MainActivity extends AppCompatActivity {
             groupList.add("ИТМ21-4");
             groupList.add("ИТМ21-5");
 
-            secondLangTeacher.add("Бугреева А.С.");
-            secondLangTeacher.add("Карпова Т.А.");
-            secondLangTeacher.add("Медведева Ю.И.");
-            secondLangTeacher.add("Борисова И.В.");
-            secondLangTeacher.add("Чалова О.А.");
-            secondLangTeacher.add("Малюгина Н.М.");
+            secondLangTeacher.add("Бугреева Анастасия Сергеевна");
+            secondLangTeacher.add("Карпова Татьяна Анатольевна");
+            secondLangTeacher.add("Медведева Юлия Ивановна");
+            secondLangTeacher.add("Борисова Инна Владимировна");
+            secondLangTeacher.add("Чалова Ольга Александровна");
+            secondLangTeacher.add("Селезнёв Владимир Михайлович");
         }
 
         if(content.equals("TCBM")) {
@@ -140,11 +140,11 @@ public class MainActivity extends AppCompatActivity {
             groupList.add("ТЦБМ21-4");
             groupList.add("ТЦБМ21-5");
 
-            secondLangTeacher.add("Доценко Н.С.");
-            secondLangTeacher.add("Карпова Т.А.");
-            secondLangTeacher.add("Краснова Т.И.");
-            secondLangTeacher.add("Медведева Ю.И.");
-            secondLangTeacher.add("Бугреева А.С.");
+            secondLangTeacher.add("Доценко Наталья Сергеевна");
+            secondLangTeacher.add("Карпова Татьяна Анатольевна");
+            secondLangTeacher.add("Краснова Татьяна Ивановна");
+            secondLangTeacher.add("Медведева Юлия Ивановна");
+            secondLangTeacher.add("Бугреева Анастасия Сергеевна");
         }
 
         System.out.println(content);

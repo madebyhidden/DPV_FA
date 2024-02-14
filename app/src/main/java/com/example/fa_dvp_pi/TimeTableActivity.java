@@ -447,7 +447,8 @@ public class TimeTableActivity extends AppCompatActivity {
 
                 List<TimetableAdapter.TimetableItem> dayItems = scheduleMap.get(dayOfWeekString);
                 if (dayItems != null) {
-                    boolean c = Objects.equals(prepod_name.split(" ")[0].toLowerCase(), langTeacher.split(" ")[0].toLowerCase());
+                    System.out.println(prepod_name+ langTeacher);
+                    boolean c = Objects.equals(prepod_name, langTeacher);
 
                     if (discipline.equals("Иностранный язык в профессиональной сфере") && c) {
                         if (check) {
