@@ -51,6 +51,7 @@ import java.util.Objects;
 
 public class TimeTableActivity extends AppCompatActivity {
 
+
     {
         if (!Python.isStarted()) {
             Python.start(new AndroidPlatform(this));
@@ -60,6 +61,8 @@ public class TimeTableActivity extends AppCompatActivity {
     private TextView tt_tvDate_;
 
     private TextView targetTextView;
+
+    public boolean error = false;
 
     TimetableAdapter mondayAdapter, tuesdayAdapter, wednesdayAdapter, thursdayAdapter, fridayAdapter, saturdayAdapter, sundayAdapter;
 
@@ -123,6 +126,12 @@ public class TimeTableActivity extends AppCompatActivity {
         make_spisok_intime();
         initializeViews();
         setupDateRecyclerView();
+        AppUpdater appUpdater = new AppUpdater(this)
+                .setDisplay(Display.SNACKBAR)
+                .setUpdateFrom(UpdateFrom.GITHUB)
+                .setGitHubUserAndRepo("madebyhidden", "DPV_FA").showAppUpdated(true).setButtonUpdate(null);
+
+        appUpdater.start();
     }
 
 
@@ -218,11 +227,14 @@ public class TimeTableActivity extends AppCompatActivity {
 
     private List<DateAdapter.DateItem> createDateItems() {
         List<DateAdapter.DateItem> dateItems = new ArrayList<>();
-        for (int i = 5; i <= 26; i = i + 7) {
-            String dateValue = (i < 10) ? String.format("от 0%s февраля", i) : String.format("от %s февраля", i);
-            dateItems.add(new DateAdapter.DateItem(dateValue));
-
-
+        for (int i = 12; i <= 33; i = i + 7) {
+            if(i==33){
+                String dateValue =  "от 04 марта";
+                dateItems.add(new DateAdapter.DateItem(dateValue));
+            }else {
+                String dateValue = (i < 10) ? String.format("от 0%s февраля", i) : String.format("от %s февраля", i);
+                dateItems.add(new DateAdapter.DateItem(dateValue));
+            }
         }
         return dateItems;
     }
@@ -332,14 +344,26 @@ public class TimeTableActivity extends AppCompatActivity {
         PyObject pyObject = py.getModule("mainForFA");
 //        PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1[0],
 //                savedValueSpinner2[0], "PI");
-
-        PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1[0],
-                savedValueSpinner2[0], content);
+        try {
+            PyObject result_void = pyObject.callAttr("update_disciplines", savedValueSpinner1[0],
+                    savedValueSpinner2[0], content);
+        } catch (Exception e) {
+            return;
+        }
 
         System.out.println(content);
         PyObject result = pyObject.callAttr("update_schedule", savedValueSpinner3[0], currentDate);
 
         parseJsonArray(String.valueOf(result), savedValueSpinner4[0]);
+        if (String.valueOf(result).equals("NoMatch")) {
+            error = true;
+            Intent intent = new Intent(this, WayActivity.class);
+            startActivity(intent);
+        } else {
+            parseJsonArray(String.valueOf(result), savedValueSpinner4[0]);
+            System.out.println("f " + error);
+        }
+
     }
 
     private void initializeViews() {
@@ -399,12 +423,9 @@ public class TimeTableActivity extends AppCompatActivity {
                             continue;
                         }
 
-                    }
-                    else if (discipline.equals("Иностранный язык в профессиональной сфере")){
+                    } else if (discipline.equals("Иностранный язык в профессиональной сфере")) {
                         continue;
-                    }
-
-                    else if (!c) {
+                    } else if (!c) {
                         dayItems.add(new TimetableAdapter.TimetableItem(discipline, beginLesson, endLesson, auditorium, kindOfWork, prepod_name, group, stream));
                         System.out.println();
                     }
