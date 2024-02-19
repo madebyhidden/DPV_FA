@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.icu.util.Calendar;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,19 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
-import com.example.timetable.ColorAdapter;
 import com.example.timetable.DateAdapter;
 import com.example.timetable.DateTransformer;
 import com.example.timetable.TimetableAdapter;
@@ -46,9 +39,6 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -61,8 +51,6 @@ import java.util.Objects;
 
 public class TimeTableActivity extends AppCompatActivity {
 
-
-    private int selectedPosition= -1;
 
     {
         if (!Python.isStarted()) {
@@ -146,7 +134,6 @@ public class TimeTableActivity extends AppCompatActivity {
         make_spisok_intime();
         initializeViews();
         setupDateRecyclerView();
-
         AppUpdater appUpdater = new AppUpdater(this)
                 .setDisplay(Display.SNACKBAR)
                 .setUpdateFrom(UpdateFrom.GITHUB)
@@ -215,10 +202,8 @@ public class TimeTableActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         reset();
         updatePage();
-
 
         View decorView = getWindow().getDecorView();
 
@@ -228,143 +213,31 @@ public class TimeTableActivity extends AppCompatActivity {
 
     }
 
-    public static int getCurrentWeek() {
-        // получаем текущую дату
-        LocalDate date = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            date = LocalDate.now();
-        }
-        // получаем объект WeekFields для текущей локали
-        WeekFields weekFields = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            weekFields = WeekFields.of(Locale.getDefault());
-        }
-        // возвращаем номер недели в году по ISO-8601
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            return date.get(weekFields.weekOfWeekBasedYear());
-        }
-        return 0;
-    }
-    public interface OnSnapPositionChangeListener {
-        // метод, который вызывается, когда позиция элемента изменилась
-        void onSnapPositionChange(int position);
-    }
-
-    public int snapPosition = RecyclerView.NO_POSITION;
-
-    public class SnapOnScrollListener extends RecyclerView.OnScrollListener {
-
-        // поле для хранения объекта SnapHelper
-        private final SnapHelper snapHelper;
-        // поле для хранения объекта OnSnapPositionChangeListener
-        private final OnSnapPositionChangeListener onSnapPositionChangeListener;
-        // поле для хранения текущей позиции элемента
-
-
-        // конструктор класса
-        public SnapOnScrollListener(SnapHelper snapHelper, OnSnapPositionChangeListener onSnapPositionChangeListener) {
-            this.snapHelper = snapHelper;
-            this.onSnapPositionChangeListener = onSnapPositionChangeListener;
-        }
-
-        // переопределяем метод, который вызывается при прокрутке RecyclerView
-        @Override
-        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-            // получаем позицию элемента, к которому прикреплен SnapHelper
-            int position = getSnapPosition(recyclerView);
-            // проверяем, изменилась ли позиция
-            if (position != snapPosition) {
-                // обновляем текущую позицию
-                snapPosition = position;
-            }
-        }
-
-        // метод для получения позиции элемента, к которому прикреплен SnapHelper
-        private int getSnapPosition(RecyclerView recyclerView) {
-            // получаем LayoutManager RecyclerView
-            RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
-            // проверяем, что он не null
-            if (layoutManager == null) {
-                return RecyclerView.NO_POSITION;
-            }
-            // получаем видимый элемент, к которому прикреплен SnapHelper
-            View snapView = snapHelper.findSnapView(layoutManager);
-            // проверяем, что он не null
-            if (snapView == null) {
-                return RecyclerView.NO_POSITION;
-            }
-            // возвращаем позицию этого элемента
-            return layoutManager.getPosition(snapView);
-        }
-
-        // метод для обработки изменения состояния прокрутки RecyclerView
-        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
-            // если прокрутка остановилась
-            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                // вызываем метод onSnapPositionChange с текущей позицией
-                onSnapPositionChangeListener.onSnapPositionChange(snapPosition);
-            }
-        }
-    }
-
-
-    private void scroll_update(){
-
-        RecyclerView rvDate = findViewById(R.id.timetable_rvDate);
-        SnapHelper snapHelper = new PagerSnapHelper();
-// прикрепляем его к RecyclerView
-        snapHelper.attachToRecyclerView(rvDate);
-        OnSnapPositionChangeListener onSnapPositionChangeListener = new OnSnapPositionChangeListener() {
-            @Override
-            public void onSnapPositionChange(int position) {
-
-                Log.d("AAA", String.valueOf(snapPosition));
-                selectedPosition = position;
-                reset();
-                updatePage();
-            }
-        };
-        SnapOnScrollListener snapOnScrollListener = new SnapOnScrollListener(snapHelper, onSnapPositionChangeListener);
-// добавляем этот объект в качестве слушателя прокрутки RecyclerView
-        rvDate.addOnScrollListener(snapOnScrollListener);
-
-
-    }
-
     private void setupDateRecyclerView() {
-
 
 
 // Создаем адаптер и заполняем его данными
 
         RecyclerView rvDate = findViewById(R.id.timetable_rvDate);
         List<DateAdapter.DateItem> dateItems = createDateItems();
-        System.out.println("TimeTavle "+ snapPosition);
-        DateAdapter dateAdapter = new DateAdapter(dateItems, createDateSelectedListener(),  snapPosition);
+        DateAdapter dateAdapter = new DateAdapter(dateItems, createDateSelectedListener());
+        rvDate.setLayoutManager(new LinearLayoutManager(this,
+                LinearLayoutManager.HORIZONTAL, false));
 
-        scroll_update();
-
-        rvDate.smoothScrollToPosition(getCurrentWeek()-1);
         rvDate.setAdapter(dateAdapter);
     }
 
-
-
-
     private List<DateAdapter.DateItem> createDateItems() {
         List<DateAdapter.DateItem> dateItems = new ArrayList<>();
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MONTH, Calendar.JANUARY);
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM", Locale.getDefault());
-
-        while (calendar.get(Calendar.MONTH) <= Calendar.JUNE) {
-            String dateValue = dateFormat.format(calendar.getTime());
-            dateItems.add(new DateAdapter.DateItem("от " +dateValue));
-            calendar.add(Calendar.DAY_OF_MONTH, 7);
+        for (int i = 12; i <= 33; i = i + 7) {
+            if(i==33){
+                String dateValue =  "от 04 марта";
+                dateItems.add(new DateAdapter.DateItem(dateValue));
+            }else {
+                String dateValue = (i < 10) ? String.format("от 0%s февраля", i) : String.format("от %s февраля", i);
+                dateItems.add(new DateAdapter.DateItem(dateValue));
+            }
         }
-
         return dateItems;
     }
 
@@ -381,7 +254,6 @@ public class TimeTableActivity extends AppCompatActivity {
         if (tt_tvDate_ != null) {
             String curr_tv_text = tt_tvDate_.getText().toString();
             String sub = curr_tv_text.substring(3);
-            Log.d("update", sub);
             String transformedDate = DateTransformer.transformDate(String.format("%s 2024", sub));
 
             try {
@@ -486,7 +358,7 @@ public class TimeTableActivity extends AppCompatActivity {
             startActivity(intent);
         } else {
             parseJsonArray(String.valueOf(result), savedValueSpinner4[0]);
-
+            System.out.println("f " + error);
         }
 
     }
@@ -547,56 +419,24 @@ public class TimeTableActivity extends AppCompatActivity {
 
 
                 if(!date_check){
-                    String date = jsonObject.optString("date", ""); // получаем строку вида "2024.02.19"
-                    int year = Integer.parseInt(date.substring(0, 4)); // извлекаем год из строки
-                    int month = Integer.parseInt(date.substring(5, 7)); // извлекаем месяц из строки
-                    int day = Integer.parseInt(date.substring(8, 10)); // извлекаем день из строки
+                    String date = jsonObject.optString("date", "");
+                    date = (String) date.subSequence(8, 10);
+                    System.out.println(date);
+                    if (Integer.parseInt(date) <= 26){
 
-                    Calendar c = Calendar.getInstance(); // создаем объект календаря
-                    c.set(year, month - 1, day); // устанавливаем дату в календаре
-                    int monthMaxDays = c.getActualMaximum(Calendar.DAY_OF_MONTH); // получаем максимальное количество дней в месяце
-                    int offset = monthMaxDays - day; // получаем смещение от конца месяца
-                    if (offset >= 6) { // если смещение больше или равно 6, то просто прибавляем дни к текущему дню
-                        tvMon.setText(String.format("Понедельник, %s", day));
-                        tvTue.setText(String.format( "Вторник, %s", day + 1));
-                        tvWed.setText(String.format( "Среда, %s", day + 2));
-                        tvThr.setText(String.format( "Четверг, %s", day + 3));
-                        tvFri.setText(String.format( "Пятница, %s", day + 4));
-                        tvSat.setText(String.format( "Суббота, %s", day + 5));
-                        tvSun.setText(String.format( "Воскресенье, %s", day + 6));
-                    } else { // иначе, если смещение меньше 6, то нужно учитывать переход на следующий месяц
-                        int nextMonth = (month % 12) + 1; // получаем номер следующего месяца
-                        int nextDay = 1; // начинаем с первого дня следующего месяца
-                        tvMon.setText(String.format("Понедельник, %s", day));
-                        tvTue.setText(String.format( "Вторник, %s", day + 1));
-                        tvWed.setText(String.format( "Среда, %s", day + 2));
-                        tvThr.setText(String.format( "Четверг, %s", day + 3));
-                        tvFri.setText(String.format( "Пятница, %s", day + 4));
-                        tvSat.setText(String.format( "Суббота, %s", day + 5));
-                        tvSun.setText(String.format( "Воскресенье, %s", day + 6));
-                        for (int q = day + 6; q > monthMaxDays; q--) { // для каждого дня, который выходит за пределы месяца
-                            switch (q - monthMaxDays) { // в зависимости от номера дня, меняем текст соответствующего дня недели
-                                case 1:
-                                    tvSun.setText(String.format( "Воскресенье, %s", nextDay));
-                                    break;
-                                case 2:
-                                    tvSat.setText(String.format( "Суббота, %s", nextDay));
-                                    break;
-                                case 3:
-                                    tvFri.setText(String.format( "Пятница, %s", nextDay));
-                                    break;
-                                case 4:
-                                    tvThr.setText(String.format( "Четверг, %s", nextDay));
-                                    break;
-                                case 5:
-                                    tvWed.setText(String.format( "Среда, %s", nextDay));
-                                    break;
-                                case 6:
-                                    tvTue.setText(String.format( "Вторник, %s", nextDay));
-                                    break;
-                            }
-                            nextDay++; // увеличиваем день следующего месяца
+                        tvMon.setText(String.format("Понедельник, %s", Integer.parseInt(date)));
+                        tvTue.setText(String.format( "Вторник, %s", Integer.parseInt(date) + 1));
+                        tvWed.setText(String.format( "Среда, %s", Integer.parseInt(date) + 2));
+                        tvThr.setText(String.format( "Четверг, %s", Integer.parseInt(date) + 3));
+                        tvFri.setText(String.format( "Пятница, %s", Integer.parseInt(date) + 4));
+                        tvSat.setText(String.format( "Суббота, %s", Integer.parseInt(date) + 5));
+                        tvSun.setText(String.format( "Воскресенье, %s", Integer.parseInt(date) + 6));
+                        if(Integer.parseInt(date) == 26){
+                            tvFri.setText(String.format( "Пятница, %s", 1));
+                            tvSat.setText(String.format( "Суббота, %s", 2));
+                            tvSun.setText(String.format( "Воскресенье, %s", 3));
                         }
+
                     }
                     date_check = true;
                 }
@@ -605,9 +445,9 @@ public class TimeTableActivity extends AppCompatActivity {
 
 
 
-
                 List<TimetableAdapter.TimetableItem> dayItems = scheduleMap.get(dayOfWeekString);
                 if (dayItems != null) {
+                    System.out.println(prepod_name+ langTeacher);
                     boolean c = Objects.equals(prepod_name, langTeacher);
 
                     if (discipline.equals("Иностранный язык в профессиональной сфере") && c) {
@@ -647,7 +487,6 @@ public class TimeTableActivity extends AppCompatActivity {
             assert recyclerView != null;
             recyclerView.setAdapter(adapter);
             recyclerView.setNestedScrollingEnabled(false);
-
 
         }
 
