@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(content.equals("ITM")) {
-            System.out.println("Love ITM");
+
             subjectList.add("Модуль КИС для среднего и крупного бизнеса");
             subjectList.add("Модуль Информационно-аналитические технологии");
             subjectList.add("Модуль Технологии управления коллективной работой");
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
             secondLangTeacher.add("Бугреева Анастасия Сергеевна");
         }
 
-        System.out.println(content);
+
 
     }
 
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
         make_spisoks();
-        System.out.println(String.valueOf(content));
+
 
 
         mySpinner1 = (Spinner) findViewById(R.id.spinner1);

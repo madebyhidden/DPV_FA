@@ -36,7 +36,6 @@ public class WayActivity extends AppCompatActivity {
         boolean isFirstRun = prefs.getBoolean("isFirstRun", true);
         TimeTableActivity timeta = new TimeTableActivity();
 
-        System.out.println("w = " + timeta.error);
         if (timeta.error){
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean("isFirstRun", true);

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import com.example.fa_dvp_pi.R;
+import com.example.fa_dvp_pi.TimeTableActivity;
 
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
     private List<DateItem> dateItems;
 
     // Создал переменную для хранения позиции выбранного элемента
-    private int selectedPosition = -1;
+    private int selectedPosition;
 
     // Создал интерфейс для передачи данных о выбранном элементе в другой класс
     public interface OnDateSelectedListener {
@@ -54,9 +55,11 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
     private OnDateSelectedListener onDateSelectedListener;
 
     // Создал конструктор для инициализации списка и слушателя
-    public DateAdapter(List<DateItem> dateItems, OnDateSelectedListener onDateSelectedListener) {
+    public DateAdapter(List<DateItem> dateItems, OnDateSelectedListener onDateSelectedListener, int selectedPosition) {
         this.dateItems = dateItems;
         this.onDateSelectedListener = onDateSelectedListener;
+        this.selectedPosition = selectedPosition;
+
     }
 
     // Перенесите код создания и присоединения SnapHelper из вашего активити в метод onAttachedToRecyclerView вашего адаптера
@@ -64,8 +67,8 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
     public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         // Создайте SnapHelper объект и присоедините его к вашему RecyclerView
-        snapHelper = new LinearSnapHelper();
-        snapHelper.attachToRecyclerView (recyclerView);
+//        snapHelper = new LinearSnapHelper();
+//        snapHelper.attachToRecyclerView (recyclerView);
     }
 
     // Создал класс для хранения ссылок на элементы разметки
@@ -103,7 +106,6 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
         // Установил текст для каждого TextView из данных
         holder.tvDate.setText(item.getDate());
         // Добавил слушатель для обработки нажатий на элемент
-
 
         CardView card = holder.itemView.findViewById(R.id.card_date);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
