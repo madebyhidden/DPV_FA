@@ -19,7 +19,78 @@
     <style name="DateString">
         <item name="android:fontFamily">@font/date</item>
         <item name="android:textSize">30sp</item>
-        <item name="android:textColor">#FFFFFF</item>
+
+    </style>
+
+
+    <style name="AppThemeLight" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="color">#569A82</item>
+        <item name="colorError">#84ACA7</item>
+
+        <item name="colorSurfaceInverse">#84ACA7</item>
+        <item name="colorControlNormal">#519E94</item>
+        <item name="alpha">255</item>
+
+
+
+        <item name="colorOnPrimary">#E5EFEF</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#B7D5D2</item>
+
+        <item name="colorOnSecondary">#D1E4E3</item>
+        <item name="colorAccent">#9ABFBC</item>
+        <item name="colorButtonNormal">#15635C</item>
+
+        <item name="android:textColor">#336765</item>
+
+    </style>
+
+
+    <style name="AppThemeLightPink" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="color">#9A5679</item>
+        <item name="colorError">#CC7EA8</item>
+
+        <item name="colorSurfaceInverse">#D676B7</item>
+        <item name="colorControlNormal">#BD4A93</item>
+        <item name="alpha">255</item>
+
+
+
+        <item name="colorOnPrimary">#EFE5EE</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#EFABD0</item>
+
+        <item name="colorOnSecondary">#FDBFE1</item>
+        <item name="colorAccent">#DA90BD</item>
+        <item name="colorButtonNormal">#850949</item>
+
+        <item name="android:textColor">#673356</item>
+
+    </style>
+
+    <style name="AppThemeDark">
+
+        <item name="colorError">#AFDACB</item>
+        <item name="colorSurface">#021B18</item>
+        <item name="colorButtonNormal">#A9CFCC</item>
+        <item name="colorSurfaceInverse">#B7DFD9</item>
+        <item name="color">#9ABCB0</item>
+        <item name="colorControlNormal">#B7DFD9</item>
+        <item name="alpha">0.5</item>
+
+
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/colorBackgroundDark</item>
+        <item name="colorAccent">#315554</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#3E6A69</item>
+
+        <item name="colorOnSecondary">#4A8180</item>
+        <item name="android:textColor">#A9CFCC</item>
     </style>
 
 

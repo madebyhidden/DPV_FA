@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.icu.util.Calendar;
 import android.net.Uri;
@@ -145,6 +146,13 @@ public class TimeTableActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        if ((getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) {
+            // Условие для проверки системной темы
+            setTheme(R.style.AppThemeDark);
+
+        } else {
+            setTheme(R.style.AppThemeLight);
+        }
         setContentView(R.layout.activity_time_table);
         reset();
         make_spisok_intime();

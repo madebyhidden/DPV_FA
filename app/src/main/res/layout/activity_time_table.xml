@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#002B27"
+    android:background="?attr/colorOnPrimary"
     tools:context=".TimeTableActivity">
     <!-- Заменил TextView с "Hello" на RecyclerView с горизонтальным расположением элементов -->
     <FrameLayout
@@ -18,7 +18,7 @@
             android:layout_height="13dp"
             android:layout_gravity="center_vertical|left"
             android:layout_marginTop="2dp"
-            android:alpha="0.5"
+            android:alpha="?attr/alpha"
             android:contentDescription="Arrow"
             android:rotation="180"
             android:scaleX="2"
@@ -30,7 +30,7 @@
             android:layout_height="13dp"
             android:layout_gravity="center_vertical|right"
             android:layout_marginTop="2dp"
-            android:alpha="0.5"
+            android:alpha="?attr/alpha"
             android:contentDescription="Arrow"
             android:scaleX="2"
             android:scaleY="2"

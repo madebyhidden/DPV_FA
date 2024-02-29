@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -30,6 +31,13 @@ public class WayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.setting_layout);
+        if ((getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) {
+            // Условие для проверки системной темы
+            setTheme(R.style.AppThemeDark);
+
+        } else {
+            setTheme(R.style.AppThemeLight);
+        }
 
         SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
 

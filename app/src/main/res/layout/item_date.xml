@@ -17,7 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginHorizontal="40dp"
-        app:cardBackgroundColor="#3B6867"
+
+        app:cardBackgroundColor="?attr/colorSecondary"
         app:cardCornerRadius="10dp"
 
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textColor="#AFDACB"
+            android:textColor="?attr/colorError"
             android:textSize="24sp"
             android:textStyle="bold" />
 

@@ -4,6 +4,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
@@ -156,7 +157,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_first);
 
+        if ((getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) {
+            // Условие для проверки системной темы
+            setTheme(R.style.AppThemeDark);
 
+        } else {
+            setTheme(R.style.AppThemeLight);
+        }
         SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
 
         boolean isFirstRun = prefs.contains("isFirstRun");

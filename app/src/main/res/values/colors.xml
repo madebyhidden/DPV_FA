@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources name="DarkTheme">
+    <color name="colorPrimaryLight">#E6ECEB</color>
+    <color name="colorBackgroundLight">#B5BDBC</color>
+    <color name="colorBackgroundDark">#002B27</color>
+    <color name="colorPrimaryDark">#1E3C3B</color>
     <color name="purple_200">#07514A</color>
     <color name="purple_500">#07514A</color>
     <color name="purple_700">#07514A</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-    <color name="black">#07514A</color>
+
+
+    <color name="black">#000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

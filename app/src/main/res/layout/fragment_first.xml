@@ -5,8 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#002B27"
-    tools:context=".FirstFragment">
+
+    android:background="?attr/colorOnPrimary"
+    >
 
     <Spinner
         android:id="@+id/spinner_pi"
@@ -55,6 +56,8 @@
         app:layout_constraintVertical_bias="1.0"
         tools:layout_editor_absoluteX="16dp" />
 
+
+
     <Button
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"
@@ -68,6 +71,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.291"
+
         android:textColor="@color/white"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

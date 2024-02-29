@@ -119,14 +119,7 @@ public class DateAdapter extends RecyclerView.Adapter<DateAdapter.DateViewHolder
                 onDateSelectedListener.onDateSelected(item);
             }
         });
-        // Добавил подсветку для выбранного элемента
-        if (position == selectedPosition) {
-            // Установил синий фон для выбранного элемента
-            card.setCardBackgroundColor(Color.parseColor("teal"));
-        } else {
-            // Установил прозрачный фон для остальных элементов
-            card.setCardBackgroundColor(Color.parseColor("#3B6867"));
-        }
+
     }
 
     // Переопределил метод для получения количества элементов в списке
