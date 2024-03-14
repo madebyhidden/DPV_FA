@@ -23,7 +23,7 @@
     </style>
 
 
-    <style name="AppThemeLight" parent="Theme.AppCompat.Light">
+    <style name="AppThemeLightF" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/white</item>
         <item name="color">#569A82</item>
@@ -42,13 +42,13 @@
         <item name="colorOnSecondary">#D1E4E3</item>
         <item name="colorAccent">#9ABFBC</item>
         <item name="colorButtonNormal">#15635C</item>
-
+        <item name="colorOutline">#15635C</item>
         <item name="android:textColor">#336765</item>
 
     </style>
 
 
-    <style name="AppThemeLightPink" parent="Theme.AppCompat.Light">
+    <style name="AppThemeLightP" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/white</item>
         <item name="color">#9A5679</item>
@@ -67,12 +67,12 @@
         <item name="colorOnSecondary">#FDBFE1</item>
         <item name="colorAccent">#DA90BD</item>
         <item name="colorButtonNormal">#850949</item>
-
+        <item name="colorOutline">#850949</item>
         <item name="android:textColor">#673356</item>
 
     </style>
 
-    <style name="AppThemeDark">
+    <style name="AppThemeDark" parent="Theme.AppCompat.DayNight">
 
         <item name="colorError">#AFDACB</item>
         <item name="colorSurface">#021B18</item>
@@ -81,7 +81,7 @@
         <item name="color">#9ABCB0</item>
         <item name="colorControlNormal">#B7DFD9</item>
         <item name="alpha">0.5</item>
-
+        <item name="colorOutline">#FFFFFF</item>
 
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorOnPrimary">@color/colorBackgroundDark</item>

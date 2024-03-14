@@ -30,14 +30,22 @@ public class WayActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.setting_layout);
-        if ((getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) {
-            // Условие для проверки системной темы
+        SharedPreferences prefs__ = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        int themeId = prefs__.getInt("theme", 2); // Значение по умолчанию
+        System.out.println(themeId);
+        if (themeId == 0) {
+            // Установка темы LightF
+            setTheme(R.style.AppThemeLightF);
+        } else if (themeId == 1) {
+            // Установка темы LightP
+            setTheme(R.style.AppThemeLightP);
+        } else if (themeId == 2) {
+            System.out.println("Hi");
+            // Установка темы Dark
             setTheme(R.style.AppThemeDark);
-
-        } else {
-            setTheme(R.style.AppThemeLight);
         }
+        setContentView(R.layout.setting_layout);
+
 
         SharedPreferences prefs = getSharedPreferences("MyPrefs", MODE_PRIVATE);
 

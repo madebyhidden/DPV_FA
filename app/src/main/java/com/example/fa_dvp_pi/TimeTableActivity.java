@@ -146,12 +146,21 @@ public class TimeTableActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        if ((getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) {
-            // Условие для проверки системной темы
+        SharedPreferences prefs__ = getSharedPreferences("AppPrefs", MODE_PRIVATE);
+        int themeId = prefs__.getInt("theme", 2); // Значение по умолчанию
+        System.out.println("Time " + themeId);
+        if (themeId == 0) {
+            // Установка темы LightF
+            setTheme(R.style.AppThemeLightF);
+        } else if (themeId == 1) {
+            // Установка темы LightP
+            setTheme(R.style.AppThemeLightP);
+        } else if (themeId == 2) {
+            // Установка темы Dark
             setTheme(R.style.AppThemeDark);
-
         } else {
-            setTheme(R.style.AppThemeLight);
+            // Если тема не найдена, используйте значение по умолчанию
+            setTheme(R.style.AppThemeLightF);
         }
         setContentView(R.layout.activity_time_table);
         reset();
@@ -360,7 +369,6 @@ public class TimeTableActivity extends AppCompatActivity {
 
         RecyclerView rvDate = findViewById(R.id.timetable_rvDate);
         List<DateAdapter.DateItem> dateItems = createDateItems();
-        System.out.println("TimeTavle "+ snapPosition);
         DateAdapter dateAdapter = new DateAdapter(dateItems, createDateSelectedListener(),  snapPosition);
 
         scroll_update();
